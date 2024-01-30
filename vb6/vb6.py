@@ -1,7 +1,8 @@
 
 from antlr4 import *
+import argparse 
 
-# Import your generated lexer and parser
+# Import generated lexer and parser
 from VisualBasic6Lexer import VisualBasic6Lexer
 from VisualBasic6Parser import VisualBasic6Parser
 from VisualBasic6ParserListener import VisualBasic6ParserListener
@@ -46,18 +47,30 @@ def read_file(file_path):
     except Exception as e:
         return f"An error occurred: {e}"
 
-# Create a lexer and parser for your input code
-input_code = read_file("/home/nd/repos/vb6-toolbox/Data Structures/CollectionWrapper.cls")
-input_stream = InputStream(input_code)
-lexer = VisualBasic6Lexer(input_stream)
-stream = CommonTokenStream(lexer)
-parser = VisualBasic6Parser(stream)
-
-# Parse the code
-tree = parser.startRule()
 
 
-# Create a listener instance and walk the parse tree
-listener = MyListener()
-walker = ParseTreeWalker()
-walker.walk(listener, tree)
+
+def main():
+    parser = argparse.ArgumentParser(description="Parse VB6 code and extract class, function, and variable information.")
+    parser.add_argument("file", help="Path to the input VB6 code file")
+    args = parser.parse_args()
+
+    # Create a lexer and parser for your input code
+    input_code = read_file(args.file)
+    input_stream = InputStream(input_code)
+    lexer = VisualBasic6Lexer(input_stream)
+    stream = CommonTokenStream(lexer)
+    parser = VisualBasic6Parser(stream)
+
+    # Parse the code
+    tree = parser.startRule()
+
+
+    # Create a listener instance and walk the parse tree
+    listener = MyListener()
+    walker = ParseTreeWalker()
+    walker.walk(listener, tree)
+
+
+if __name__ == "__main__":
+    main()
