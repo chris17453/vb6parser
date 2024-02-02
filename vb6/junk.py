@@ -42,6 +42,30 @@
         self.depth -= 1
         info("exit", ctx, self.depth)
 
+    # Enter a parse tree produced by VisualBasic6Parser#argDefaultValue.
+    def enterArgDefaultValue(self, ctx:VisualBasic6Parser.ArgDefaultValueContext):
+        self.depth += 1
+        print("DEFAULT VALUE -'{0}' : {1}".format(self.tree.get_scope(),ctx.getText()))
+        info("enter", ctx, self.depth)
+
+    # Exit a parse tree produced by VisualBasic6Parser#argDefaultValue.
+    def exitArgDefaultValue(self, ctx:VisualBasic6Parser.ArgDefaultValueContext):
+        self.depth -= 1
+        info("exit", ctx, self.depth)
+    
+    # Enter a parse tree produced by VisualBasic6Parser#ambiguousIdentifier.
+    def enterAmbiguousIdentifier(self, ctx:VisualBasic6Parser.AmbiguousIdentifierContext):
+        self.depth += 1
+        #name=ctx.getText()
+
+        info("enter", ctx, self.depth)
+
+    # Exit a parse tree produced by VisualBasic6Parser#ambiguousIdentifier.
+    def exitAmbiguousIdentifier(self, ctx:VisualBasic6Parser.AmbiguousIdentifierContext):
+        self.depth -= 1
+        self.name=ctx.getText()
+        info("exit", ctx, self.depth)
+
 
     # Enter a parse tree produced by VisualBasic6Parser#baseType.
     def enterBaseType(self, ctx:VisualBasic6Parser.BaseTypeContext):
@@ -54,6 +78,16 @@
         info("exit", ctx, self.depth)
 
 
+    # Enter a parse tree produced by VisualBasic6Parser#argList.
+    def enterArgList(self, ctx:VisualBasic6Parser.ArgListContext):
+        self.depth += 1
+        info("enter", ctx, self.depth)
+
+    # Exit a parse tree produced by VisualBasic6Parser#argList.
+    def exitArgList(self, ctx:VisualBasic6Parser.ArgListContext):
+        self.depth -= 1
+        info("exit", ctx, self.depth)
+s
     # Enter a parse tree produced by VisualBasic6Parser#certainIdentifier.
     def enterCertainIdentifier(self, ctx:VisualBasic6Parser.CertainIdentifierContext):
         self.depth += 1

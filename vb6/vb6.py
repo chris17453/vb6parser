@@ -80,6 +80,9 @@ class gardner:
             self.rescope=True
         self.scope_depth=depth
         self.scope_type=scope_type
+    
+    def add_scope(self,name):
+        self.scope.append(name)
 
     def get_scope(self,append=None):
         if append:
@@ -142,9 +145,9 @@ class gardner:
 
         obj['ret'].append(value)
 
-    def add_arg(self,scope,arg,default=None,has_default=False):
+    def add_arg(self,scope,arg,default=None,has_default=False,as_type=None,optional=None,type_hint=None):
         obj=self.get_obj(scope)
-        item={'name':arg,'has_default':has_default,'scope':scope}
+        item={'name':arg,'has_default':has_default,'scope':scope,'optional':optional,'as_type':as_type,'type_hint':type_hint}
         if has_default==True:
             item['default']=default
         if 'args' not in obj:
@@ -171,74 +174,76 @@ class MyListener(VisualBasic6ParserListener):
 
     # Enter a parse tree produced by VisualBasic6Parser#functionStmt.
     def enterFunctionStmt(self, ctx:VisualBasic6Parser.FunctionStmtContext):
-   #     self.tree.add_func()
-        self.tree.expect("func",depth=self.depth)
         self.depth += 1
+        ambiguousIdentifier = ctx.ambiguousIdentifier()
+        if ambiguousIdentifier !=None:
+            ambiguousIdentifier = ambiguousIdentifier.getText()
+            scope=self.tree.get_scope()
+            self.tree.add_scope(ambiguousIdentifier)
+            self.tree.add_func(scope,ambiguousIdentifier)
+        else:
+            print("$$$IDK")
         info("enter", ctx, self.depth)
 
     # Exit a parse tree produced by VisualBasic6Parser#functionStmt.
     def exitFunctionStmt(self, ctx:VisualBasic6Parser.FunctionStmtContext):
         self.depth -= 1
-        name=self.tree.scope.pop()        
-        info("exit", ctx, self.depth)
-
-
-    # Enter a parse tree produced by VisualBasic6Parser#argList.
-    def enterArgList(self, ctx:VisualBasic6Parser.ArgListContext):
-        self.depth += 1
-        info("enter", ctx, self.depth)
-
-    # Exit a parse tree produced by VisualBasic6Parser#argList.
-    def exitArgList(self, ctx:VisualBasic6Parser.ArgListContext):
-        self.depth -= 1
-        info("exit", ctx, self.depth)
+        try:
+            name=self.tree.scope.pop()        
+            info("exit", ctx, self.depth)
+        except:
+            print("WOW")
 
 
     # Enter a parse tree produced by VisualBasic6Parser#arg.
     def enterArg(self, ctx:VisualBasic6Parser.ArgContext):
         self.depth += 1
-        self.tree.expect("arg",depth=self.depth) 
-        info("enter", ctx, self.depth)
+
+
+        ambiguousIdentifier = ctx.ambiguousIdentifier()
+        OPTIONAL = ctx.OPTIONAL()
+        PARAMARRAY = ctx.PARAMARRAY()
+        typeHint = ctx.typeHint()
+        asTypeClause = ctx.asTypeClause()
+        argDefaultValue = ctx.argDefaultValue()
+        BYVAL = ctx.BYVAL()
+        BYREF = ctx.BYREF()
+
+        if ambiguousIdentifier !=None:
+            ambiguousIdentifier = ambiguousIdentifier.getText()
+        if OPTIONAL !=None:
+            OPTIONAL = OPTIONAL.getText()
+        if PARAMARRAY !=None:
+            PARAMARRAY = PARAMARRAY.getText()
+        if typeHint !=None:
+            typeHint = typeHint.getText()
+        if asTypeClause !=None:
+            asTypeClause = asTypeClause.getText()
+        if argDefaultValue !=None:
+            argDefaultValue = argDefaultValue.getText()
+        if BYVAL !=None:
+            BYVAL = BYVAL.getText()
+        if BYREF !=None:
+            BYREF = BYREF.getText()
+
+        print(" PARAMARRAY: ",PARAMARRAY)
+        print(" BYVAL: ",BYVAL)
+        print(" BYREF: ",BYREF)
+        if argDefaultValue:
+            has_default=True
+        else:
+            has_default=None
+        scope=self.tree.get_scope()
+        self.tree.add_arg(scope,ambiguousIdentifier,default=argDefaultValue,has_default=has_default,optional=OPTIONAL,as_type=asTypeClause,type_hint=typeHint)
+
+
+        #info("enter", ctx, self.depth)
 
     # Exit a parse tree produced by VisualBasic6Parser#arg.
     def exitArg(self, ctx:VisualBasic6Parser.ArgContext):
         self.depth -= 1
         info("exit", ctx, self.depth)
 
-
-    # Enter a parse tree produced by VisualBasic6Parser#argDefaultValue.
-    def enterArgDefaultValue(self, ctx:VisualBasic6Parser.ArgDefaultValueContext):
-        self.depth += 1
-        print("DEFAULT VALUE -'{0}' : {1}".format(self.tree.get_scope(),ctx.getText()))
-        info("enter", ctx, self.depth)
-
-    # Exit a parse tree produced by VisualBasic6Parser#argDefaultValue.
-    def exitArgDefaultValue(self, ctx:VisualBasic6Parser.ArgDefaultValueContext):
-        self.depth -= 1
-        info("exit", ctx, self.depth)
-    
-    # Enter a parse tree produced by VisualBasic6Parser#ambiguousIdentifier.
-    def enterAmbiguousIdentifier(self, ctx:VisualBasic6Parser.AmbiguousIdentifierContext):
-        self.depth += 1
-        name=ctx.getText()
-        scope=self.tree.get_scope()
-
-        if self.tree.rescope==True:
-            self.tree.scope.append(name)
-            self.tree.rescope=None
-
-        if self.tree.scope_type=="func":
-            self.tree.add_func(scope,name)
-        elif self.tree.scope_type=="arg":
-            self.tree.add_arg(scope,name)
-        self.tree.scope_type=None
-        info("enter", ctx, self.depth)
-
-    # Exit a parse tree produced by VisualBasic6Parser#ambiguousIdentifier.
-    def exitAmbiguousIdentifier(self, ctx:VisualBasic6Parser.AmbiguousIdentifierContext):
-        self.depth -= 1
-        self.name=ctx.getText()
-        info("exit", ctx, self.depth)
 
 
 def read_file(file_path):
@@ -278,6 +283,7 @@ def main():
     lexer = VisualBasic6Lexer(input_stream)
     stream = CommonTokenStream(lexer)
     parser = VisualBasic6Parser(stream)
+    
 
     # Parse the code
     tree = parser.startRule()
