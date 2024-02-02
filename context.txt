@@ -1,0 +1,79 @@
+obj.COMMA = <bound method VisualBasic6Parser.ArgListContext.COMMA of <VisualBasic6Parser.VisualBasic6Parser.ArgListContext object at 0x7f9ef6b63d20>>
+-------------------------------------------
+obj.EMPTY = <antlr4.ParserRuleContext.ParserRuleContext object at 0x7f9ef7b50f50>
+-------------------------------------------
+obj.LPAREN = <bound method VisualBasic6Parser.ArgListContext.LPAREN of <VisualBasic6Parser.VisualBasic6Parser.ArgListContext object at 0x7f9ef6b63d20>>
+-------------------------------------------
+obj.RPAREN = <bound method VisualBasic6Parser.ArgListContext.RPAREN of <VisualBasic6Parser.VisualBasic6Parser.ArgListContext object at 0x7f9ef6b63d20>>
+-------------------------------------------
+obj.WS = <bound method VisualBasic6Parser.ArgListContext.WS of <VisualBasic6Parser.VisualBasic6Parser.ArgListContext object at 0x7f9ef6b63d20>>
+-------------------------------------------
+obj.accept = <bound method RuleContext.accept of <VisualBasic6Parser.VisualBasic6Parser.ArgListContext object at 0x7f9ef6b63d20>>
+-------------------------------------------
+obj.addChild = <bound method ParserRuleContext.addChild of <VisualBasic6Parser.VisualBasic6Parser.ArgListContext object at 0x7f9ef6b63d20>>
+-------------------------------------------
+obj.addErrorNode = <bound method ParserRuleContext.addErrorNode of <VisualBasic6Parser.VisualBasic6Parser.ArgListContext object at 0x7f9ef6b63d20>>
+-------------------------------------------
+obj.addTokenNode = <bound method ParserRuleContext.addTokenNode of <VisualBasic6Parser.VisualBasic6Parser.ArgListContext object at 0x7f9ef6b63d20>>
+-------------------------------------------
+obj.arg = <bound method VisualBasic6Parser.ArgListContext.arg of <VisualBasic6Parser.VisualBasic6Parser.ArgListContext object at 0x7f9ef6b63d20>>
+-------------------------------------------
+obj.children = [<antlr4.tree.Tree.TerminalNodeImpl object at 0x7f9ef72a0e90>, <VisualBasic6Parser.VisualBasic6Parser.ArgContext object at 0x7f9ef6b63e70>, <antlr4.tree.Tree.TerminalNodeImpl object at 0x7f9ef603c290>]
+-------------------------------------------
+obj.copyFrom = <bound method ParserRuleContext.copyFrom of <VisualBasic6Parser.VisualBasic6Parser.ArgListContext object at 0x7f9ef6b63d20>>
+-------------------------------------------
+obj.depth = <bound method RuleContext.depth of <VisualBasic6Parser.VisualBasic6Parser.ArgListContext object at 0x7f9ef6b63d20>>
+-------------------------------------------
+obj.enterRule = <bound method VisualBasic6Parser.ArgListContext.enterRule of <VisualBasic6Parser.VisualBasic6Parser.ArgListContext object at 0x7f9ef6b63d20>>
+-------------------------------------------
+obj.exception = None
+-------------------------------------------
+obj.exitRule = <bound method VisualBasic6Parser.ArgListContext.exitRule of <VisualBasic6Parser.VisualBasic6Parser.ArgListContext object at 0x7f9ef6b63d20>>
+-------------------------------------------
+obj.getAltNumber = <bound method RuleContext.getAltNumber of <VisualBasic6Parser.VisualBasic6Parser.ArgListContext object at 0x7f9ef6b63d20>>
+-------------------------------------------
+obj.getChild = <bound method ParserRuleContext.getChild of <VisualBasic6Parser.VisualBasic6Parser.ArgListContext object at 0x7f9ef6b63d20>>
+-------------------------------------------
+obj.getChildCount = <bound method ParserRuleContext.getChildCount of <VisualBasic6Parser.VisualBasic6Parser.ArgListContext object at 0x7f9ef6b63d20>>
+-------------------------------------------
+obj.getChildren = <bound method ParserRuleContext.getChildren of <VisualBasic6Parser.VisualBasic6Parser.ArgListContext object at 0x7f9ef6b63d20>>
+-------------------------------------------
+obj.getPayload = <bound method RuleContext.getPayload of <VisualBasic6Parser.VisualBasic6Parser.ArgListContext object at 0x7f9ef6b63d20>>
+-------------------------------------------
+obj.getRuleContext = <bound method RuleContext.getRuleContext of <VisualBasic6Parser.VisualBasic6Parser.ArgListContext object at 0x7f9ef6b63d20>>
+-------------------------------------------
+obj.getRuleIndex = <bound method VisualBasic6Parser.ArgListContext.getRuleIndex of <VisualBasic6Parser.VisualBasic6Parser.ArgListContext object at 0x7f9ef6b63d20>>
+-------------------------------------------
+obj.getSourceInterval = <bound method ParserRuleContext.getSourceInterval of <VisualBasic6Parser.VisualBasic6Parser.ArgListContext object at 0x7f9ef6b63d20>>
+-------------------------------------------
+obj.getText = <bound method RuleContext.getText of <VisualBasic6Parser.VisualBasic6Parser.ArgListContext object at 0x7f9ef6b63d20>>
+-------------------------------------------
+obj.getToken = <bound method ParserRuleContext.getToken of <VisualBasic6Parser.VisualBasic6Parser.ArgListContext object at 0x7f9ef6b63d20>>
+-------------------------------------------
+obj.getTokens = <bound method ParserRuleContext.getTokens of <VisualBasic6Parser.VisualBasic6Parser.ArgListContext object at 0x7f9ef6b63d20>>
+-------------------------------------------
+obj.getTypedRuleContext = <bound method ParserRuleContext.getTypedRuleContext of <VisualBasic6Parser.VisualBasic6Parser.ArgListContext object at 0x7f9ef6b63d20>>
+-------------------------------------------
+obj.getTypedRuleContexts = <bound method ParserRuleContext.getTypedRuleContexts of <VisualBasic6Parser.VisualBasic6Parser.ArgListContext object at 0x7f9ef6b63d20>>
+-------------------------------------------
+obj.invokingState = 876
+-------------------------------------------
+obj.isEmpty = <bound method RuleContext.isEmpty of <VisualBasic6Parser.VisualBasic6Parser.ArgListContext object at 0x7f9ef6b63d20>>
+-------------------------------------------
+obj.parentCtx = <VisualBasic6Parser.VisualBasic6Parser.DeclareStmtContext object at 0x7f9ef6b63930>
+-------------------------------------------
+obj.parser = <VisualBasic6Parser.VisualBasic6Parser object at 0x7f9ef79836e0>
+-------------------------------------------
+obj.removeLastChild = <bound method ParserRuleContext.removeLastChild of <VisualBasic6Parser.VisualBasic6Parser.ArgListContext object at 0x7f9ef6b63d20>>
+-------------------------------------------
+obj.setAltNumber = <bound method RuleContext.setAltNumber of <VisualBasic6Parser.VisualBasic6Parser.ArgListContext object at 0x7f9ef6b63d20>>
+-------------------------------------------
+obj.start = <antlr4.Token.CommonToken object at 0x7f9ef6b916d0>
+-------------------------------------------
+obj.stop = <antlr4.Token.CommonToken object at 0x7f9ef6b91e50>
+-------------------------------------------
+obj.toString = <bound method RuleContext.toString of <VisualBasic6Parser.VisualBasic6Parser.ArgListContext object at 0x7f9ef6b63d20>>
+-------------------------------------------
+obj.toStringTree = <bound method RuleContext.toStringTree of <VisualBasic6Parser.VisualBasic6Parser.ArgListContext object at 0x7f9ef6b63d20>>
+-------------------------------------------
+===========================================

@@ -1,5 +1,5 @@
 .vscode*
 .vscode-upload.json
 Pipfile.lock
-.antler
+.antlr
 _temp

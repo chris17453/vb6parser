@@ -6,4 +6,5 @@ vb6:
 
 
 run:
-	python vb6/vb6.py "/home/nd/repos/vb6-toolbox/Data Structures/CollectionWrapper.cls"
+#	python vb6/vb6.py "/home/nd/repos/vb6-toolbox/Data Structures/CollectionWrapper.cls"
+	python vb6/vb6.py "/home/nd/repos/vb6-toolbox/Dates/GmtDateTime.bas">l
