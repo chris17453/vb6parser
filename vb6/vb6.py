@@ -74,6 +74,7 @@ class gardner:
         self.rescope=None
         self.scope_type=None
         self.scope_depth=None
+        self.components=['class','func','sub','args','vars','ret']
 
     def expect(self,scope_type,depth):
         if scope_type=="func":
@@ -90,29 +91,30 @@ class gardner:
             scope.append(append)
             return ".".join(scope)
         return ".".join(self.scope)
-         
- 
+
+    def add_component(self,component):
+        if component not in self.components:
+            self.components.append(component)
+
     def get_obj(self,scope):
         cur_obj=self.data['root']
+        component=""
+
+        part=""
         if len(scope)>0 and scope !="":
             path=scope.split(".")
-        
             for part in path:
-                    if 'vars' in cur_obj and part in cur_obj['vars']:
-                        cur_obj=cur_obj['vars'][part]
-                    elif 'ret' in cur_obj and part in cur_obj['ret']:
-                        cur_obj=cur_obj['ret'][part]
-                    elif 'args' in cur_obj and part in cur_obj['args']:
-                        cur_obj=cur_obj['args'][part]
-                    elif 'func' in cur_obj and part in cur_obj['func']:
-                        cur_obj=cur_obj['func'][part]
-                    elif 'class' in cur_obj and part in cur_obj['class']:
-                        cur_obj=cur_obj['class'][part]
-                    else:
-                        print(self.data)
-                        print (f"Cant find {part}")
-                        exit()
-
+                found=None    
+                for component in self.components:
+                    if component in cur_obj:
+                        if part in cur_obj[component]:
+                            cur_obj=cur_obj[component][part]
+                            found=True
+                            break
+                if found==None:
+                    print(self.data)
+                    print (f"Cant find {part}")
+                    exit()
         return cur_obj
 
     def add_class(self,scope,name):
@@ -123,12 +125,12 @@ class gardner:
         obj['class'][name]={'name':name,
                     'type':'class'}
     
-    def add_func(self,scope,name,start=None,end=None,column=None):
+    def add_func(self,scope,name,start=None,end=None,column=None,return_type=None):
         obj=self.get_obj(scope)
         if 'func' not in obj:
             obj['func']={}
 
-        obj['func'][name]={'name':name,'start':start,'end':end,'col':column}
+        obj['func'][name]={'name':name,'start':start,'end':end,'col':column,'return_type':return_type}
 
     def add_var(self,scope,name):
         obj=self.get_obj(scope)
@@ -136,7 +138,6 @@ class gardner:
             obj['vars']={}
 
         obj['vars'][name]={'name':name}
-
 
     def add_ret(self,scope,value):
         obj=self.get_obj(scope)
@@ -176,75 +177,74 @@ class MyListener(VisualBasic6ParserListener):
     def enterFunctionStmt(self, ctx:VisualBasic6Parser.FunctionStmtContext):
         self.depth += 1
         ambiguousIdentifier = ctx.ambiguousIdentifier()
+        #dump(ctx)
+        
+        start_line = ctx.start.line
+        end_line = ctx.stop.line
+        return_type=ctx.asTypeClause().getText()
+        return_type=return_type.replace("As ",'').strip()
         if ambiguousIdentifier !=None:
             ambiguousIdentifier = ambiguousIdentifier.getText()
             scope=self.tree.get_scope()
             self.tree.add_scope(ambiguousIdentifier)
-            self.tree.add_func(scope,ambiguousIdentifier)
-        else:
-            print("$$$IDK")
-        info("enter", ctx, self.depth)
+            self.tree.add_func(scope,ambiguousIdentifier,start=start_line,end=end_line,return_type=return_type)
+            scope=self.tree.get_scope()
+            ## VB RETURN VARS are the same name as the function name
+            self.tree.add_ret(scope,ambiguousIdentifier)
+            return_type=return_type
+
+        args=ctx.argList().arg()
+        # Iterate over the arguments
+        for arg in args:
+            #arg = args.arg(i)
+            ambiguousIdentifier = arg.ambiguousIdentifier()
+            OPTIONAL = arg.OPTIONAL()
+            PARAMARRAY = arg.PARAMARRAY()
+            typeHint = arg.typeHint()
+            asTypeClause = arg.asTypeClause()
+
+            argDefaultValue = arg.argDefaultValue()
+            BYVAL = arg.BYVAL()
+            BYREF = arg.BYREF()
+
+            if ambiguousIdentifier !=None:
+                ambiguousIdentifier = ambiguousIdentifier.getText()
+            if OPTIONAL !=None:
+                OPTIONAL = OPTIONAL.getText()
+                if OPTIONAL=='Optional':
+                    OPTIONAL=True
+                else: OPTIONAL=None
+            if PARAMARRAY !=None:
+                PARAMARRAY = PARAMARRAY.getText()
+            if typeHint !=None:
+                typeHint = typeHint.getText()
+            if asTypeClause !=None:
+                asTypeClause = asTypeClause.getText()
+                asTypeClause = asTypeClause.replace("As ",'').strip()
+            if argDefaultValue !=None:
+                argDefaultValue = argDefaultValue.getText()
+                argDefaultValue = argDefaultValue.replace("=",'').strip()
+            if BYVAL !=None:
+                BYVAL = BYVAL.getText()
+            if BYREF !=None:
+                BYREF = BYREF.getText()
+
+            #print(" PARAMARRAY: ",PARAMARRAY)
+            #print(" BYVAL: ",BYVAL)
+            #print(" BYREF: ",BYREF)
+            if argDefaultValue:
+                has_default=True
+            else:
+                has_default=None
+            scope=self.tree.get_scope()
+            self.tree.add_arg(scope,ambiguousIdentifier,default=argDefaultValue,has_default=has_default,optional=OPTIONAL,as_type=asTypeClause,type_hint=typeHint)
+
 
     # Exit a parse tree produced by VisualBasic6Parser#functionStmt.
     def exitFunctionStmt(self, ctx:VisualBasic6Parser.FunctionStmtContext):
         self.depth -= 1
-        try:
-            name=self.tree.scope.pop()        
-            info("exit", ctx, self.depth)
-        except:
-            print("WOW")
-
-
-    # Enter a parse tree produced by VisualBasic6Parser#arg.
-    def enterArg(self, ctx:VisualBasic6Parser.ArgContext):
-        self.depth += 1
-
-
-        ambiguousIdentifier = ctx.ambiguousIdentifier()
-        OPTIONAL = ctx.OPTIONAL()
-        PARAMARRAY = ctx.PARAMARRAY()
-        typeHint = ctx.typeHint()
-        asTypeClause = ctx.asTypeClause()
-        argDefaultValue = ctx.argDefaultValue()
-        BYVAL = ctx.BYVAL()
-        BYREF = ctx.BYREF()
-
-        if ambiguousIdentifier !=None:
-            ambiguousIdentifier = ambiguousIdentifier.getText()
-        if OPTIONAL !=None:
-            OPTIONAL = OPTIONAL.getText()
-        if PARAMARRAY !=None:
-            PARAMARRAY = PARAMARRAY.getText()
-        if typeHint !=None:
-            typeHint = typeHint.getText()
-        if asTypeClause !=None:
-            asTypeClause = asTypeClause.getText()
-        if argDefaultValue !=None:
-            argDefaultValue = argDefaultValue.getText()
-        if BYVAL !=None:
-            BYVAL = BYVAL.getText()
-        if BYREF !=None:
-            BYREF = BYREF.getText()
-
-        print(" PARAMARRAY: ",PARAMARRAY)
-        print(" BYVAL: ",BYVAL)
-        print(" BYREF: ",BYREF)
-        if argDefaultValue:
-            has_default=True
-        else:
-            has_default=None
-        scope=self.tree.get_scope()
-        self.tree.add_arg(scope,ambiguousIdentifier,default=argDefaultValue,has_default=has_default,optional=OPTIONAL,as_type=asTypeClause,type_hint=typeHint)
-
-
-        #info("enter", ctx, self.depth)
-
-    # Exit a parse tree produced by VisualBasic6Parser#arg.
-    def exitArg(self, ctx:VisualBasic6Parser.ArgContext):
-        self.depth -= 1
-        info("exit", ctx, self.depth)
-
-
+        name=self.tree.scope.pop()        
+     
 
 def read_file(file_path):
     """Reads the content of a file and returns it as a string.
