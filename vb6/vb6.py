@@ -126,19 +126,19 @@ class gardner:
         obj['class'][name]={'name':name,
                     'type':'class'}
     
-    def add_func(self,scope,name,start=None,end=None,column=None,return_type=None,visibility=None,source=None):
+    def add_func(self,scope,name,start=None,end=None,column=None,return_type=None,visibility=None,source=None,file=None):
         obj=self.get_obj(scope)
         if 'func' not in obj:
             obj['func']={}
 
-        obj['func'][name]={'name':name,'start':start,'end':end,'col':column,'return_type':return_type,'visibility':visibility,'source':source,'scope':scope}
+        obj['func'][name]={'name':name,'start':start,'end':end,'col':column,'return_type':return_type,'visibility':visibility,'source':source,'scope':scope,'file':file}
 
-    def add_sub(self,scope,name,start=None,end=None,column=None,visibility=None,source=None):
+    def add_sub(self,scope,name,start=None,end=None,column=None,visibility=None,source=None,file=None):
         obj=self.get_obj(scope)
         if 'sub' not in obj:
             obj['sub']={}
 
-        obj['sub'][name]={'name':name,'start':start,'end':end,'col':column,'visibility':visibility,'source':source,'scope':scope}
+        obj['sub'][name]={'name':name,'start':start,'end':end,'col':column,'visibility':visibility,'source':source,'scope':scope,'file':file}
 
     def add_var(self,scope,name):
         obj=self.get_obj(scope)
@@ -234,7 +234,7 @@ class MyListener(VisualBasic6ParserListener):
             ambiguousIdentifier = ambiguousIdentifier.getText()
             scope=self.tree.get_scope()
             self.tree.add_scope(ambiguousIdentifier)
-            self.tree.add_func(scope,ambiguousIdentifier,start=start_line,end=end_line,return_type=return_type,visibility=visibility,source=source)
+            self.tree.add_func(scope,ambiguousIdentifier,start=start_line,end=end_line,return_type=return_type,visibility=visibility,source=source,file=self.source)
             scope=self.tree.get_scope()
             ## VB RETURN VARS are the same name as the function name
             self.tree.add_ret(scope,ambiguousIdentifier)
@@ -311,7 +311,7 @@ class MyListener(VisualBasic6ParserListener):
             ambiguousIdentifier = ambiguousIdentifier.getText()
             scope=self.tree.get_scope()
             self.tree.add_scope(ambiguousIdentifier)
-            self.tree.add_sub(scope,ambiguousIdentifier,start=start_line,end=end_line,visibility=visibility,source=source)
+            self.tree.add_sub(scope,ambiguousIdentifier,start=start_line,end=end_line,visibility=visibility,source=source,file=self.source)
     
         
 
