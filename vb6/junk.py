@@ -395,15 +395,6 @@ s
         info("exit", ctx, self.depth)
 
 
-    # Enter a parse tree produced by VisualBasic6Parser#module.
-    def enterModule(self, ctx:VisualBasic6Parser.ModuleContext):
-        self.depth += 1
-        info("enter", ctx, self.depth)
-
-    # Exit a parse tree produced by VisualBasic6Parser#module.
-    def exitModule(self, ctx:VisualBasic6Parser.ModuleContext):
-        self.depth -= 1
-        info("exit", ctx, self.depth)
 
 
     # Enter a parse tree produced by VisualBasic6Parser#moduleReferences.
@@ -1548,15 +1539,6 @@ s
         info("exit", ctx, self.depth)
 
 
-    # Enter a parse tree produced by VisualBasic6Parser#subStmt.
-    def enterSubStmt(self, ctx:VisualBasic6Parser.SubStmtContext):
-        self.depth += 1
-        info("enter", ctx, self.depth)
-
-    # Exit a parse tree produced by VisualBasic6Parser#subStmt.
-    def exitSubStmt(self, ctx:VisualBasic6Parser.SubStmtContext):
-        self.depth -= 1
-        info("exit", ctx, self.depth)
 
 
     # Enter a parse tree produced by VisualBasic6Parser#timeStmt.

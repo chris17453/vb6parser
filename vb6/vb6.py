@@ -12,6 +12,7 @@
 # Date: 01-30-2024 
 #***********************************************************************************************************************                                                     
 from antlr4 import *
+from utils import file_fragment
 import argparse 
 import inspect 
 from pprint import pprint
@@ -125,12 +126,19 @@ class gardner:
         obj['class'][name]={'name':name,
                     'type':'class'}
     
-    def add_func(self,scope,name,start=None,end=None,column=None,return_type=None):
+    def add_func(self,scope,name,start=None,end=None,column=None,return_type=None,visibility=None,source=None):
         obj=self.get_obj(scope)
         if 'func' not in obj:
             obj['func']={}
 
-        obj['func'][name]={'name':name,'start':start,'end':end,'col':column,'return_type':return_type}
+        obj['func'][name]={'name':name,'start':start,'end':end,'col':column,'return_type':return_type,'visibility':visibility,'source':source,'scope':scope}
+
+    def add_sub(self,scope,name,start=None,end=None,column=None,visibility=None,source=None):
+        obj=self.get_obj(scope)
+        if 'sub' not in obj:
+            obj['sub']={}
+
+        obj['sub'][name]={'name':name,'start':start,'end':end,'col':column,'visibility':visibility,'source':source,'scope':scope}
 
     def add_var(self,scope,name):
         obj=self.get_obj(scope)
@@ -159,8 +167,13 @@ class gardner:
 
 # Create a custom listener by subclassing the generated base listener
 class MyListener(VisualBasic6ParserListener):
-    depth=0
-    tree=gardner()
+
+    # override init, so we can store some stuff
+    def __init__(self,source):
+        super().__init__()
+        self.source=source
+        self.depth=0
+        self.tree=gardner()
 
     
     # Enter a parse tree produced by VisualBasic6Parser#startRule.\t\t
@@ -173,6 +186,33 @@ class MyListener(VisualBasic6ParserListener):
     #    self.depth -= 1
     #    info("exit", ctx, self.depth)
 
+
+    # Enter a parse tree produced by VisualBasic6Parser#module.
+    def enterModule(self, ctx:VisualBasic6Parser.ModuleContext):
+        self.depth += 1
+        info("entremodule", ctx, self.depth)
+        
+    def bob():
+        ambiguousIdentifier = ctx.ambiguousIdentifier()
+        #dump(ctx)
+        
+        start_line = ctx.start.line
+        end_line = ctx.stop.line
+        if ambiguousIdentifier !=None:
+            ambiguousIdentifier = ambiguousIdentifier.getText()
+            scope=self.tree.get_scope()
+            self.tree.add_scope(ambiguousIdentifier)
+            self.tree.add_class(scope,ambiguousIdentifier,start=start_line,end=end_line)
+        info("enter", ctx, self.depth)
+
+    # Exit a parse tree produced by VisualBasic6Parser#module.
+    def exitModule(self, ctx:VisualBasic6Parser.ModuleContext):
+        self.depth -= 1
+       # name=self.tree.scope.pop()        
+        info("exit", ctx, self.depth)
+
+
+
     # Enter a parse tree produced by VisualBasic6Parser#functionStmt.
     def enterFunctionStmt(self, ctx:VisualBasic6Parser.FunctionStmtContext):
         self.depth += 1
@@ -183,11 +223,18 @@ class MyListener(VisualBasic6ParserListener):
         end_line = ctx.stop.line
         return_type=ctx.asTypeClause().getText()
         return_type=return_type.replace("As ",'').strip()
+        
+        visibility=ctx.visibility()
+        if visibility:
+            visibility=visibility.getText()
+
+
         if ambiguousIdentifier !=None:
+            source=file_fragment(self.source,start=start_line,end=end_line)
             ambiguousIdentifier = ambiguousIdentifier.getText()
             scope=self.tree.get_scope()
             self.tree.add_scope(ambiguousIdentifier)
-            self.tree.add_func(scope,ambiguousIdentifier,start=start_line,end=end_line,return_type=return_type)
+            self.tree.add_func(scope,ambiguousIdentifier,start=start_line,end=end_line,return_type=return_type,visibility=visibility,source=source)
             scope=self.tree.get_scope()
             ## VB RETURN VARS are the same name as the function name
             self.tree.add_ret(scope,ambiguousIdentifier)
@@ -238,13 +285,91 @@ class MyListener(VisualBasic6ParserListener):
                 has_default=None
             scope=self.tree.get_scope()
             self.tree.add_arg(scope,ambiguousIdentifier,default=argDefaultValue,has_default=has_default,optional=OPTIONAL,as_type=asTypeClause,type_hint=typeHint)
-
-
+        
     # Exit a parse tree produced by VisualBasic6Parser#functionStmt.
     def exitFunctionStmt(self, ctx:VisualBasic6Parser.FunctionStmtContext):
         self.depth -= 1
         name=self.tree.scope.pop()        
      
+
+
+
+    # Enter a parse tree produced by VisualBasic6Parser#subStmt.
+    def enterSubStmt(self, ctx:VisualBasic6Parser.SubStmtContext):
+        self.depth += 1
+        ambiguousIdentifier = ctx.ambiguousIdentifier()
+        
+        start_line = ctx.start.line
+        end_line = ctx.stop.line
+        visibility=ctx.visibility()
+        if visibility:
+            visibility=visibility.getText()
+
+        if ambiguousIdentifier !=None:
+            source=file_fragment(self.source,start=start_line,end=end_line)
+
+            ambiguousIdentifier = ambiguousIdentifier.getText()
+            scope=self.tree.get_scope()
+            self.tree.add_scope(ambiguousIdentifier)
+            self.tree.add_sub(scope,ambiguousIdentifier,start=start_line,end=end_line,visibility=visibility,source=source)
+    
+        
+
+
+        args=ctx.argList().arg()
+        # Iterate over the arguments
+        for arg in args:
+            #arg = args.arg(i)
+            ambiguousIdentifier = arg.ambiguousIdentifier()
+            OPTIONAL = arg.OPTIONAL()
+            PARAMARRAY = arg.PARAMARRAY()
+            typeHint = arg.typeHint()
+            asTypeClause = arg.asTypeClause()
+
+            argDefaultValue = arg.argDefaultValue()
+            BYVAL = arg.BYVAL()
+            BYREF = arg.BYREF()
+
+            if ambiguousIdentifier !=None:
+                ambiguousIdentifier = ambiguousIdentifier.getText()
+            if OPTIONAL !=None:
+                OPTIONAL = OPTIONAL.getText()
+                if OPTIONAL=='Optional':
+                    OPTIONAL=True
+                else: OPTIONAL=None
+            if PARAMARRAY !=None:
+                PARAMARRAY = PARAMARRAY.getText()
+            if typeHint !=None:
+                typeHint = typeHint.getText()
+            if asTypeClause !=None:
+                asTypeClause = asTypeClause.getText()
+                asTypeClause = asTypeClause.replace("As ",'').strip()
+            if argDefaultValue !=None:
+                argDefaultValue = argDefaultValue.getText()
+                argDefaultValue = argDefaultValue.replace("=",'').strip()
+            if BYVAL !=None:
+                BYVAL = BYVAL.getText()
+            if BYREF !=None:
+                BYREF = BYREF.getText()
+
+            #print(" PARAMARRAY: ",PARAMARRAY)
+            #print(" BYVAL: ",BYVAL)
+            #print(" BYREF: ",BYREF)
+            if argDefaultValue:
+                has_default=True
+            else:
+                has_default=None
+            scope=self.tree.get_scope()
+            self.tree.add_arg(scope,ambiguousIdentifier,default=argDefaultValue,has_default=has_default,optional=OPTIONAL,as_type=asTypeClause,type_hint=typeHint)
+
+
+    # Exit a parse tree produced by VisualBasic6Parser#subStmt.
+    def exitSubStmt(self, ctx:VisualBasic6Parser.SubStmtContext):
+        self.depth -= 1
+        name=self.tree.scope.pop()        
+
+
+
 
 def read_file(file_path):
     """Reads the content of a file and returns it as a string.
@@ -290,7 +415,7 @@ def main():
 
 
     # Create a listener instance and walk the parse tree
-    listener = MyListener()
+    listener = MyListener(source=args.file)
     walker = ParseTreeWalker()
     walker.walk(listener, tree)
     pprint(listener.tree.data)

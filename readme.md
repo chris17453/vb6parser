@@ -31,7 +31,8 @@ make vb6
 python vb6/vb6.py <filename.py>
 
 # this is the test run with test code
-make run
+make test-single
+make test-class
 ```
 
 ## G4 files
