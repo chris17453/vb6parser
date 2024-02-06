@@ -12,6 +12,7 @@
 # Date: 01-30-2024 
 #***********************************************************************************************************************                                                     
 from antlr4 import *
+import json
 import xxhash
 from utils import file_fragment, dump, find_key_case_insensitive
 import argparse 
@@ -446,13 +447,9 @@ def read_file(file_path):
         return f"An error occurred: {e}"
 
 
-def main():
-    parser = argparse.ArgumentParser(description="Parse VB6 code and extract class, function, and variable information.")
-    parser.add_argument("file", help="Path to the input VB6 code file")
-    args = parser.parse_args()
-
+def parse(file):
     # Create a lexer and parser for your input code
-    input_code = read_file(args.file)
+    input_code = read_file(file)
     input_stream = InputStream(input_code)
     lexer = VisualBasic6Lexer(input_stream)
     stream = CommonTokenStream(lexer)
@@ -463,10 +460,24 @@ def main():
 
 
     # Create a listener instance and walk the parse tree
-    listener = MyListener(source=args.file)
+    listener = MyListener(source=file)
     walker = ParseTreeWalker()
     walker.walk(listener, tree)
-    pprint(listener.tree.data,width=160,compact=False)
+    return listener.tree.data
+
+def main():
+    parser = argparse.ArgumentParser(description="Parse VB6 code and extract class, function, and variable information.")
+    parser.add_argument("file", help="Path to the input VB6 code file")
+    parser.add_argument("--json", help="Output as json", action="store_true")
+    parser.add_argument("--pprint", help="Output as python pretyprint", action="store_true")
+    args = parser.parse_args()
+
+    data=parse(args.file)
+    if args.json:
+        json_string = json.dumps(data, indent=4)
+        print(json_string)
+    elif args.pprint:
+        pprint(data,width=160,compact=False)
 
 
 if __name__ == "__main__":

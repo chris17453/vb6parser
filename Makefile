@@ -16,8 +16,8 @@ vb6:
 
 
 test-single:
-	python vb6/vb6.py "./vb6-toolbox/Dates/GmtDateTime.bas">test/output-single.txt
+	python vb6/vb6.py "./vb6-toolbox/Dates/GmtDateTime.bas" --json>test/output-single.txt
 
 
 test-class:
-	python vb6/vb6.py "./vb6-toolbox/Data Structures/CollectionWrapper.cls">test/output-class.txt
+	python vb6/vb6.py "./vb6-toolbox/Data Structures/CollectionWrapper.cls" --json>test/output-class.txt

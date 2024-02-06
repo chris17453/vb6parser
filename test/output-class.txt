@@ -1,280 +1,254 @@
-{'root': {'class': {'CollectionWrapper': {'func': {'Add': {'args': {'objToAdd': {'as_type': 'Variant',
-                                                                                 'has_default': None,
-                                                                                 'name': 'objToAdd',
-                                                                                 'optional': None,
-                                                                                 'scope': 'CollectionWrapper.Add',
-                                                                                 'type_hint': None}},
-                                                           'col': None,
-                                                           'end': 52,
-                                                           'file': './vb6-toolbox/Data Structures/CollectionWrapper.cls',
-                                                           'hash': '89c763e9e607740d',
-                                                           'name': 'Add',
-                                                           'ret': ['Add'],
-                                                           'return_type': 'Variant',
-                                                           'scope': 'CollectionWrapper',
-                                                           'source': 'Public Function Add(objToAdd As Variant) As Variant\n'
-                                                                     '    On Error GoTo ErrH\n'
-                                                                     '    \n'
-                                                                     '    If mTypeName = vbNullString _\n'
-                                                                     '        Then mTypeName = TypeName(objToAdd)\n'
-                                                                     '    \n'
-                                                                     '    Call mCollection.Add(objToAdd)\n'
-                                                                     '    \n'
-                                                                     '    If IsObject(objToAdd) Then\n'
-                                                                     '        Set Add = objToAdd\n'
-                                                                     '    Else\n'
-                                                                     '        Add = objToAdd\n'
-                                                                     '    End If\n'
-                                                                     '    \n'
-                                                                     'ErrH: Blame "Add"\n'
-                                                                     'End Function',
-                                                           'start': 37,
-                                                           'visibility': 'Public'},
-                                                   'NewEnum': {'col': None,
-                                                               'end': 101,
-                                                               'file': './vb6-toolbox/Data Structures/CollectionWrapper.cls',
-                                                               'hash': '89c763e9e607740d',
-                                                               'name': 'NewEnum',
-                                                               'ret': ['NewEnum'],
-                                                               'return_type': 'IUnknown',
-                                                               'scope': 'CollectionWrapper',
-                                                               'source': 'Public Function NewEnum() As IUnknown\n'
-                                                                         'Attribute NewEnum.VB_UserMemId = -4\n'
-                                                                         'Attribute NewEnum.VB_MemberFlags = "40"\n'
-                                                                         '    Set NewEnum = mCollection.[_NewEnum]\n'
-                                                                         'End Function',
-                                                               'start': 97,
-                                                               'visibility': 'Public'}},
-                                          'name': 'CollectionWrapper',
-                                          'sub': {'Blame': {'args': {'currntProcedure': {'as_type': 'String',
-                                                                                         'has_default': None,
-                                                                                         'name': 'currntProcedure',
-                                                                                         'optional': None,
-                                                                                         'scope': 'CollectionWrapper.Blame',
-                                                                                         'type_hint': None},
-                                                                     'errorDescrption': {'as_type': 'String',
-                                                                                         'has_default': None,
-                                                                                         'name': 'errorDescrption',
-                                                                                         'optional': True,
-                                                                                         'scope': 'CollectionWrapper.Blame',
-                                                                                         'type_hint': None},
-                                                                     'errorNumbr': {'as_type': 'CollectionWrapperErrors',
-                                                                                    'default': '-1',
-                                                                                    'has_default': True,
-                                                                                    'name': 'errorNumbr',
-                                                                                    'optional': True,
-                                                                                    'scope': 'CollectionWrapper.Blame',
-                                                                                    'type_hint': None}},
-                                                            'col': None,
-                                                            'end': 173,
-                                                            'file': './vb6-toolbox/Data Structures/CollectionWrapper.cls',
-                                                            'hash': '89c763e9e607740d',
-                                                            'name': 'Blame',
-                                                            'scope': 'CollectionWrapper',
-                                                            'source': 'Private Sub Blame(ByVal currntProcedure As String _\n'
-                                                                      '                , Optional ByVal errorDescrption As String _\n'
-                                                                      '                , Optional ByVal errorNumbr As CollectionWrapperErrors = -1 _\n'
-                                                                      '                )\n'
-                                                                      '    Call SaveError\n'
-                                                                      '    Call LoadError(currntProcedure, errorDescrption, errorNumbr)\n'
-                                                                      'End Sub',
-                                                            'start': 167,
-                                                            'visibility': 'Private'},
-                                                  'Class_Initialize': {'col': None,
-                                                                       'end': 119,
-                                                                       'file': './vb6-toolbox/Data Structures/CollectionWrapper.cls',
-                                                                       'hash': '89c763e9e607740d',
-                                                                       'name': 'Class_Initialize',
-                                                                       'scope': 'CollectionWrapper',
-                                                                       'source': 'Private Sub Class_Initialize()\n'
-                                                                                 '    On Error GoTo ErrH\n'
-                                                                                 '    \n'
-                                                                                 '    Set mCollection = New VBA.Collection\n'
-                                                                                 '    \n'
-                                                                                 'ErrH: Blame "Class_Initialize"\n'
-                                                                                 'End Sub',
-                                                                       'start': 113,
-                                                                       'visibility': 'Private'},
-                                                  'Class_Terminate': {'col': None,
-                                                                      'end': 129,
-                                                                      'file': './vb6-toolbox/Data Structures/CollectionWrapper.cls',
-                                                                      'hash': '89c763e9e607740d',
-                                                                      'name': 'Class_Terminate',
-                                                                      'scope': 'CollectionWrapper',
-                                                                      'source': 'Private Sub Class_Terminate()\n'
-                                                                                '    On Error GoTo ErrH\n'
-                                                                                '    \n'
-                                                                                '    Call Me.Clear\n'
-                                                                                '    \n'
-                                                                                '    Set mCollection = Nothing\n'
-                                                                                '    \n'
-                                                                                'ErrH: Blame "Class_Terminate"\n'
-                                                                                'End Sub',
-                                                                      'start': 121,
-                                                                      'visibility': 'Private'},
-                                                  'Clear': {'col': None,
-                                                            'end': 65,
-                                                            'file': './vb6-toolbox/Data Structures/CollectionWrapper.cls',
-                                                            'hash': '89c763e9e607740d',
-                                                            'name': 'Clear',
-                                                            'scope': 'CollectionWrapper',
-                                                            'source': 'Public Sub Clear()\n'
-                                                                      '    On Error GoTo ErrH\n'
-                                                                      '    With mCollection\n'
-                                                                      '    \n'
-                                                                      '        Dim i&: For i = 1 To .Count\n'
-                                                                      '            Call .Remove(1)\n'
-                                                                      '        Next i\n'
-                                                                      '        \n'
-                                                                      '    End With\n'
-                                                                      'ErrH: Blame "Clear"\n'
-                                                                      'End Sub',
-                                                            'start': 55,
-                                                            'visibility': 'Public'},
-                                                  'ErrorIf': {'args': {'errCondition': {'as_type': 'Boolean',
-                                                                                        'has_default': None,
-                                                                                        'name': 'errCondition',
-                                                                                        'optional': None,
-                                                                                        'scope': 'CollectionWrapper.ErrorIf',
-                                                                                        'type_hint': None},
-                                                                       'errorMsg': {'as_type': 'String',
-                                                                                    'has_default': None,
-                                                                                    'name': 'errorMsg',
-                                                                                    'optional': None,
-                                                                                    'scope': 'CollectionWrapper.ErrorIf',
-                                                                                    'type_hint': None},
-                                                                       'errorNumbr': {'as_type': 'CollectionWrapperErrors',
-                                                                                      'default': '-1',
-                                                                                      'has_default': True,
-                                                                                      'name': 'errorNumbr',
-                                                                                      'optional': True,
-                                                                                      'scope': 'CollectionWrapper.ErrorIf',
-                                                                                      'type_hint': None}},
-                                                              'col': None,
-                                                              'end': 147,
-                                                              'file': './vb6-toolbox/Data Structures/CollectionWrapper.cls',
-                                                              'hash': '89c763e9e607740d',
-                                                              'name': 'ErrorIf',
-                                                              'scope': 'CollectionWrapper',
-                                                              'source': 'Private Sub ErrorIf(errCondition As Boolean _\n'
-                                                                        '                  , errorMsg As String _\n'
-                                                                        '                  , Optional errorNumbr As CollectionWrapperErrors = -1 _\n'
-                                                                        '                  )\n'
-                                                                        '    If errCondition Then Err.Raise errorNumbr, TypeName(Me), errorMsg\n'
-                                                                        'End Sub',
-                                                              'start': 142,
-                                                              'visibility': 'Private'},
-                                                  'LoadError': {'args': {'currntProcedure': {'as_type': 'String',
-                                                                                             'has_default': None,
-                                                                                             'name': 'currntProcedure',
-                                                                                             'optional': None,
-                                                                                             'scope': 'CollectionWrapper.LoadError',
-                                                                                             'type_hint': None},
-                                                                         'errorDescrption': {'as_type': 'String',
-                                                                                             'has_default': None,
-                                                                                             'name': 'errorDescrption',
-                                                                                             'optional': True,
-                                                                                             'scope': 'CollectionWrapper.LoadError',
-                                                                                             'type_hint': None},
-                                                                         'errorNumbr': {'as_type': 'CollectionWrapperErrors',
-                                                                                        'default': '-1',
-                                                                                        'has_default': True,
-                                                                                        'name': 'errorNumbr',
-                                                                                        'optional': True,
-                                                                                        'scope': 'CollectionWrapper.LoadError',
-                                                                                        'type_hint': None}},
-                                                                'col': None,
-                                                                'end': 206,
-                                                                'file': './vb6-toolbox/Data Structures/CollectionWrapper.cls',
-                                                                'hash': '89c763e9e607740d',
-                                                                'name': 'LoadError',
-                                                                'scope': 'CollectionWrapper',
-                                                                'source': 'Private Sub LoadError(ByVal currntProcedure As String _\n'
-                                                                          '                    , Optional ByVal errorDescrption As String _\n'
-                                                                          '                    , Optional ByVal errorNumbr As CollectionWrapperErrors = -1 _\n'
-                                                                          '                    )\n'
-                                                                          '    With mError\n'
-                                                                          '        If Not .HasError Then Exit Sub\n'
-                                                                          '            \n'
-                                                                          '        If LenB(errorDescrption) = 0 Then\n'
-                                                                          '            errorDescrption = .Description\n'
-                                                                          '        Else\n'
-                                                                          '            errorDescrption = .Description & vbCrLf & errorDescrption\n'
-                                                                          '        End If\n'
-                                                                          '        \n'
-                                                                          '        currntProcedure = mTypeName & "s" _\n'
-                                                                          '                        & "." & currntProcedure & "()"\n'
-                                                                          '\n'
-                                                                          '        If errorNumbr = -1 Then errorNumbr = .Number\n'
-                                                                          '        \n'
-                                                                          '        Select Case errorNumbr\n'
-                                                                          '            Case NotInitted\n'
-                                                                          '                errorDescrption = TypeName(Me) & " not initted." & vbCrLf _\n'
-                                                                          '                               & "Please call " & TypeName(Me) _\n'
-                                                                          '                               & ".Init() before " & currntProcedure & "."\n'
-                                                                          '            \n'
-                                                                          '            Case Else\n'
-                                                                          '                errorDescrption = currntProcedure & vbCrLf & errorDescrption\n'
-                                                                          '        End Select\n'
-                                                                          '\n'
-                                                                          '        Err.Raise errorNumbr, .Source, errorDescrption\n'
-                                                                          '            \n'
-                                                                          '    End With\n'
-                                                                          'End Sub',
-                                                                'start': 175,
-                                                                'visibility': 'Private'},
-                                                  'Remove': {'args': {'zeroBasedIndx': {'as_type': 'Long',
-                                                                                        'has_default': None,
-                                                                                        'name': 'zeroBasedIndx',
-                                                                                        'optional': None,
-                                                                                        'scope': 'CollectionWrapper.Remove',
-                                                                                        'type_hint': None}},
-                                                             'col': None,
-                                                             'end': 94,
-                                                             'file': './vb6-toolbox/Data Structures/CollectionWrapper.cls',
-                                                             'hash': '89c763e9e607740d',
-                                                             'name': 'Remove',
-                                                             'scope': 'CollectionWrapper',
-                                                             'source': 'Public Sub Remove(zeroBasedIndx As Long)\n'
-                                                                       '    On Error GoTo ErrH\n'
-                                                                       '    \n'
-                                                                       '    Call mCollection.Remove(zeroBasedIndx + 1)\n'
-                                                                       '    \n'
-                                                                       'ErrH: Blame "Remove"\n'
-                                                                       'End Sub',
-                                                             'start': 88,
-                                                             'visibility': 'Public'},
-                                                  'SaveError': {'col': None,
-                                                                'end': 165,
-                                                                'file': './vb6-toolbox/Data Structures/CollectionWrapper.cls',
-                                                                'hash': '89c763e9e607740d',
-                                                                'name': 'SaveError',
-                                                                'scope': 'CollectionWrapper',
-                                                                'source': 'Private Sub SaveError()\n'
-                                                                          '    With mError\n'
-                                                                          '        If Err Then\n'
-                                                                          '            .HasError = True\n'
-                                                                          '            .Description = Err.Description\n'
-                                                                          '            .Number = Err.Number\n'
-                                                                          '            .Source = Err.Source\n'
-                                                                          '            \n'
-                                                                          '        Else\n'
-                                                                          '            .HasError = False\n'
-                                                                          '            .Description = vbNullString\n'
-                                                                          '            .Number = 0\n'
-                                                                          '            .Source = vbNullString\n'
-                                                                          '        End If\n'
-                                                                          '    End With\n'
-                                                                          '    Err.Clear\n'
-                                                                          'End Sub',
-                                                                'start': 149,
-                                                                'visibility': 'Private'}},
-                                          'type': 'class'},
-                    'attributes': {'VB_Creatable': 'True',
-                                   'VB_Exposed': 'False',
-                                   'VB_GlobalNameSpace': 'False',
-                                   'VB_Name': '"CollectionWrapper"',
-                                   'VB_PredeclaredId': 'False'},
-                    'config': {'DataBindingBehavior': '0', 'DataSourceBehavior': '0', 'MTSTransactionMode': '0', 'MultiUse': '-1', 'Persistable': '0'},
-                    'header': {'class': 'CLASS', 'version': '1.0'},
-                    'options': {'Option Explicit': 'Option Explicit'}}}}
+{
+    "root": {
+        "class": {
+            "CollectionWrapper": {
+                "name": "CollectionWrapper",
+                "type": "class",
+                "func": {
+                    "Add": {
+                        "name": "Add",
+                        "start": 37,
+                        "end": 52,
+                        "col": null,
+                        "return_type": "Variant",
+                        "visibility": "Public",
+                        "source": "Public Function Add(objToAdd As Variant) As Variant\n    On Error GoTo ErrH\n    \n    If mTypeName = vbNullString _\n        Then mTypeName = TypeName(objToAdd)\n    \n    Call mCollection.Add(objToAdd)\n    \n    If IsObject(objToAdd) Then\n        Set Add = objToAdd\n    Else\n        Add = objToAdd\n    End If\n    \nErrH: Blame \"Add\"\nEnd Function",
+                        "scope": "CollectionWrapper",
+                        "file": "./vb6-toolbox/Data Structures/CollectionWrapper.cls",
+                        "hash": "89c763e9e607740d",
+                        "ret": [
+                            "Add"
+                        ],
+                        "args": {
+                            "objToAdd": {
+                                "name": "objToAdd",
+                                "has_default": null,
+                                "scope": "CollectionWrapper.Add",
+                                "optional": null,
+                                "as_type": "Variant",
+                                "type_hint": null
+                            }
+                        }
+                    },
+                    "NewEnum": {
+                        "name": "NewEnum",
+                        "start": 97,
+                        "end": 101,
+                        "col": null,
+                        "return_type": "IUnknown",
+                        "visibility": "Public",
+                        "source": "Public Function NewEnum() As IUnknown\nAttribute NewEnum.VB_UserMemId = -4\nAttribute NewEnum.VB_MemberFlags = \"40\"\n    Set NewEnum = mCollection.[_NewEnum]\nEnd Function",
+                        "scope": "CollectionWrapper",
+                        "file": "./vb6-toolbox/Data Structures/CollectionWrapper.cls",
+                        "hash": "89c763e9e607740d",
+                        "ret": [
+                            "NewEnum"
+                        ]
+                    }
+                },
+                "sub": {
+                    "Clear": {
+                        "name": "Clear",
+                        "start": 55,
+                        "end": 65,
+                        "col": null,
+                        "visibility": "Public",
+                        "source": "Public Sub Clear()\n    On Error GoTo ErrH\n    With mCollection\n    \n        Dim i&: For i = 1 To .Count\n            Call .Remove(1)\n        Next i\n        \n    End With\nErrH: Blame \"Clear\"\nEnd Sub",
+                        "scope": "CollectionWrapper",
+                        "file": "./vb6-toolbox/Data Structures/CollectionWrapper.cls",
+                        "hash": "89c763e9e607740d"
+                    },
+                    "Remove": {
+                        "name": "Remove",
+                        "start": 88,
+                        "end": 94,
+                        "col": null,
+                        "visibility": "Public",
+                        "source": "Public Sub Remove(zeroBasedIndx As Long)\n    On Error GoTo ErrH\n    \n    Call mCollection.Remove(zeroBasedIndx + 1)\n    \nErrH: Blame \"Remove\"\nEnd Sub",
+                        "scope": "CollectionWrapper",
+                        "file": "./vb6-toolbox/Data Structures/CollectionWrapper.cls",
+                        "hash": "89c763e9e607740d",
+                        "args": {
+                            "zeroBasedIndx": {
+                                "name": "zeroBasedIndx",
+                                "has_default": null,
+                                "scope": "CollectionWrapper.Remove",
+                                "optional": null,
+                                "as_type": "Long",
+                                "type_hint": null
+                            }
+                        }
+                    },
+                    "Class_Initialize": {
+                        "name": "Class_Initialize",
+                        "start": 113,
+                        "end": 119,
+                        "col": null,
+                        "visibility": "Private",
+                        "source": "Private Sub Class_Initialize()\n    On Error GoTo ErrH\n    \n    Set mCollection = New VBA.Collection\n    \nErrH: Blame \"Class_Initialize\"\nEnd Sub",
+                        "scope": "CollectionWrapper",
+                        "file": "./vb6-toolbox/Data Structures/CollectionWrapper.cls",
+                        "hash": "89c763e9e607740d"
+                    },
+                    "Class_Terminate": {
+                        "name": "Class_Terminate",
+                        "start": 121,
+                        "end": 129,
+                        "col": null,
+                        "visibility": "Private",
+                        "source": "Private Sub Class_Terminate()\n    On Error GoTo ErrH\n    \n    Call Me.Clear\n    \n    Set mCollection = Nothing\n    \nErrH: Blame \"Class_Terminate\"\nEnd Sub",
+                        "scope": "CollectionWrapper",
+                        "file": "./vb6-toolbox/Data Structures/CollectionWrapper.cls",
+                        "hash": "89c763e9e607740d"
+                    },
+                    "ErrorIf": {
+                        "name": "ErrorIf",
+                        "start": 142,
+                        "end": 147,
+                        "col": null,
+                        "visibility": "Private",
+                        "source": "Private Sub ErrorIf(errCondition As Boolean _\n                  , errorMsg As String _\n                  , Optional errorNumbr As CollectionWrapperErrors = -1 _\n                  )\n    If errCondition Then Err.Raise errorNumbr, TypeName(Me), errorMsg\nEnd Sub",
+                        "scope": "CollectionWrapper",
+                        "file": "./vb6-toolbox/Data Structures/CollectionWrapper.cls",
+                        "hash": "89c763e9e607740d",
+                        "args": {
+                            "errCondition": {
+                                "name": "errCondition",
+                                "has_default": null,
+                                "scope": "CollectionWrapper.ErrorIf",
+                                "optional": null,
+                                "as_type": "Boolean",
+                                "type_hint": null
+                            },
+                            "errorMsg": {
+                                "name": "errorMsg",
+                                "has_default": null,
+                                "scope": "CollectionWrapper.ErrorIf",
+                                "optional": null,
+                                "as_type": "String",
+                                "type_hint": null
+                            },
+                            "errorNumbr": {
+                                "name": "errorNumbr",
+                                "has_default": true,
+                                "scope": "CollectionWrapper.ErrorIf",
+                                "optional": true,
+                                "as_type": "CollectionWrapperErrors",
+                                "type_hint": null,
+                                "default": "-1"
+                            }
+                        }
+                    },
+                    "SaveError": {
+                        "name": "SaveError",
+                        "start": 149,
+                        "end": 165,
+                        "col": null,
+                        "visibility": "Private",
+                        "source": "Private Sub SaveError()\n    With mError\n        If Err Then\n            .HasError = True\n            .Description = Err.Description\n            .Number = Err.Number\n            .Source = Err.Source\n            \n        Else\n            .HasError = False\n            .Description = vbNullString\n            .Number = 0\n            .Source = vbNullString\n        End If\n    End With\n    Err.Clear\nEnd Sub",
+                        "scope": "CollectionWrapper",
+                        "file": "./vb6-toolbox/Data Structures/CollectionWrapper.cls",
+                        "hash": "89c763e9e607740d"
+                    },
+                    "Blame": {
+                        "name": "Blame",
+                        "start": 167,
+                        "end": 173,
+                        "col": null,
+                        "visibility": "Private",
+                        "source": "Private Sub Blame(ByVal currntProcedure As String _\n                , Optional ByVal errorDescrption As String _\n                , Optional ByVal errorNumbr As CollectionWrapperErrors = -1 _\n                )\n    Call SaveError\n    Call LoadError(currntProcedure, errorDescrption, errorNumbr)\nEnd Sub",
+                        "scope": "CollectionWrapper",
+                        "file": "./vb6-toolbox/Data Structures/CollectionWrapper.cls",
+                        "hash": "89c763e9e607740d",
+                        "args": {
+                            "currntProcedure": {
+                                "name": "currntProcedure",
+                                "has_default": null,
+                                "scope": "CollectionWrapper.Blame",
+                                "optional": null,
+                                "as_type": "String",
+                                "type_hint": null
+                            },
+                            "errorDescrption": {
+                                "name": "errorDescrption",
+                                "has_default": null,
+                                "scope": "CollectionWrapper.Blame",
+                                "optional": true,
+                                "as_type": "String",
+                                "type_hint": null
+                            },
+                            "errorNumbr": {
+                                "name": "errorNumbr",
+                                "has_default": true,
+                                "scope": "CollectionWrapper.Blame",
+                                "optional": true,
+                                "as_type": "CollectionWrapperErrors",
+                                "type_hint": null,
+                                "default": "-1"
+                            }
+                        }
+                    },
+                    "LoadError": {
+                        "name": "LoadError",
+                        "start": 175,
+                        "end": 206,
+                        "col": null,
+                        "visibility": "Private",
+                        "source": "Private Sub LoadError(ByVal currntProcedure As String _\n                    , Optional ByVal errorDescrption As String _\n                    , Optional ByVal errorNumbr As CollectionWrapperErrors = -1 _\n                    )\n    With mError\n        If Not .HasError Then Exit Sub\n            \n        If LenB(errorDescrption) = 0 Then\n            errorDescrption = .Description\n        Else\n            errorDescrption = .Description & vbCrLf & errorDescrption\n        End If\n        \n        currntProcedure = mTypeName & \"s\" _\n                        & \".\" & currntProcedure & \"()\"\n\n        If errorNumbr = -1 Then errorNumbr = .Number\n        \n        Select Case errorNumbr\n            Case NotInitted\n                errorDescrption = TypeName(Me) & \" not initted.\" & vbCrLf _\n                               & \"Please call \" & TypeName(Me) _\n                               & \".Init() before \" & currntProcedure & \".\"\n            \n            Case Else\n                errorDescrption = currntProcedure & vbCrLf & errorDescrption\n        End Select\n\n        Err.Raise errorNumbr, .Source, errorDescrption\n            \n    End With\nEnd Sub",
+                        "scope": "CollectionWrapper",
+                        "file": "./vb6-toolbox/Data Structures/CollectionWrapper.cls",
+                        "hash": "89c763e9e607740d",
+                        "args": {
+                            "currntProcedure": {
+                                "name": "currntProcedure",
+                                "has_default": null,
+                                "scope": "CollectionWrapper.LoadError",
+                                "optional": null,
+                                "as_type": "String",
+                                "type_hint": null
+                            },
+                            "errorDescrption": {
+                                "name": "errorDescrption",
+                                "has_default": null,
+                                "scope": "CollectionWrapper.LoadError",
+                                "optional": true,
+                                "as_type": "String",
+                                "type_hint": null
+                            },
+                            "errorNumbr": {
+                                "name": "errorNumbr",
+                                "has_default": true,
+                                "scope": "CollectionWrapper.LoadError",
+                                "optional": true,
+                                "as_type": "CollectionWrapperErrors",
+                                "type_hint": null,
+                                "default": "-1"
+                            }
+                        }
+                    }
+                }
+            },
+            "attributes": {
+                "VB_Name": "\"CollectionWrapper\"",
+                "VB_GlobalNameSpace": "False",
+                "VB_Creatable": "True",
+                "VB_PredeclaredId": "False",
+                "VB_Exposed": "False"
+            },
+            "header": {
+                "class": "CLASS",
+                "version": "1.0"
+            },
+            "config": {
+                "MultiUse": "-1",
+                "Persistable": "0",
+                "DataBindingBehavior": "0",
+                "DataSourceBehavior": "0",
+                "MTSTransactionMode": "0"
+            },
+            "options": {
+                "Option Explicit": "Option Explicit"
+            }
+        }
+    }
+}
