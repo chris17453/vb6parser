@@ -1,0 +1,526 @@
+{'root': {'module': {'GmtDateTime': {'func': {'GmtDate': {'args': {'startngDate': {'as_type': 'Variant',
+                                                                                   'has_default': None,
+                                                                                   'name': 'startngDate',
+                                                                                   'optional': True,
+                                                                                   'scope': 'GmtDateTime.GmtDate',
+                                                                                   'type_hint': None}},
+                                                          'col': None,
+                                                          'end': 82,
+                                                          'file': './vb6-toolbox/Dates/GmtDateTime.bas',
+                                                          'hash': '89c763e9e607740d',
+                                                          'name': 'GmtDate',
+                                                          'ret': ['GmtDate'],
+                                                          'return_type': 'Date',
+                                                          'scope': 'GmtDateTime',
+                                                          'source': 'Public Function GmtDate(Optional ByVal startngDate As Variant _\n'
+                                                                    '                      ) As Date\n'
+                                                                    '    On Error GoTo ErrH\n'
+                                                                    '    \n'
+                                                                    '    Dim diff&: diff = GmtTimeDifference\n'
+                                                                    '    \n'
+                                                                    '    If IsMissing(startngDate) Then startngDate = Now\n'
+                                                                    '    \n'
+                                                                    '    GmtDate = DateAdd("s", -diff, startngDate)\n'
+                                                                    '    \n'
+                                                                    'ErrH: Blame "GmtDate"\n'
+                                                                    'End Function',
+                                                          'start': 71,
+                                                          'visibility': 'Public'},
+                                              'GmtDateLocal': {'args': {'gmtRefernceDate': {'as_type': 'Date',
+                                                                                            'has_default': None,
+                                                                                            'name': 'gmtRefernceDate',
+                                                                                            'optional': None,
+                                                                                            'scope': 'GmtDateTime.GmtDateLocal',
+                                                                                            'type_hint': None}},
+                                                               'col': None,
+                                                               'end': 132,
+                                                               'file': './vb6-toolbox/Dates/GmtDateTime.bas',
+                                                               'hash': '89c763e9e607740d',
+                                                               'name': 'GmtDateLocal',
+                                                               'ret': ['GmtDateLocal'],
+                                                               'return_type': 'Date',
+                                                               'scope': 'GmtDateTime',
+                                                               'source': 'Public Function GmtDateLocal(gmtRefernceDate As Date) As Date\n'
+                                                                         '    On Error GoTo ErrH\n'
+                                                                         '    \n'
+                                                                         '    GmtDateLocal = DateAdd("s", GmtTimeDifference(), gmtRefernceDate)\n'
+                                                                         '    \n'
+                                                                         'ErrH: Blame "GmtDateLocal"\n'
+                                                                         'End Function',
+                                                               'start': 126,
+                                                               'visibility': 'Public'},
+                                              'GmtFormat': {'args': {'dateFormt': {'as_type': None,
+                                                                                   'default': '"ddd, dd mmm yyyy hh:nn:ss"',
+                                                                                   'has_default': True,
+                                                                                   'name': 'dateFormt',
+                                                                                   'optional': True,
+                                                                                   'scope': 'GmtDateTime.GmtFormat',
+                                                                                   'type_hint': '$'},
+                                                                     'dateObj': {'as_type': 'Date',
+                                                                                 'has_default': None,
+                                                                                 'name': 'dateObj',
+                                                                                 'optional': None,
+                                                                                 'scope': 'GmtDateTime.GmtFormat',
+                                                                                 'type_hint': None},
+                                                                     'gmtSuffx': {'as_type': None,
+                                                                                  'default': '" GMT"',
+                                                                                  'has_default': True,
+                                                                                  'name': 'gmtSuffx',
+                                                                                  'optional': True,
+                                                                                  'scope': 'GmtDateTime.GmtFormat',
+                                                                                  'type_hint': '$'}},
+                                                            'col': None,
+                                                            'end': 176,
+                                                            'file': './vb6-toolbox/Dates/GmtDateTime.bas',
+                                                            'hash': '89c763e9e607740d',
+                                                            'name': 'GmtFormat',
+                                                            'ret': ['GmtFormat'],
+                                                            'return_type': 'String',
+                                                            'scope': 'GmtDateTime',
+                                                            'source': 'Public Function GmtFormat(dateObj As Date _\n'
+                                                                      '                        , Optional dateFormt$ = "ddd, dd mmm yyyy hh:nn:ss" _\n'
+                                                                      '                        , Optional gmtSuffx$ = " GMT" _\n'
+                                                                      '                        ) As String\n'
+                                                                      '    On Error GoTo ErrH\n'
+                                                                      '    \n'
+                                                                      '    GmtFormat = Format$(dateObj, dateFormt) & gmtSuffx\n'
+                                                                      '    \n'
+                                                                      'ErrH: Blame "GmtFormat"\n'
+                                                                      'End Function',
+                                                            'start': 167,
+                                                            'visibility': 'Public'},
+                                              'GmtStringToDate': {'args': {'internetDateStr': {'as_type': 'String',
+                                                                                               'has_default': None,
+                                                                                               'name': 'internetDateStr',
+                                                                                               'optional': None,
+                                                                                               'scope': 'GmtDateTime.GmtStringToDate',
+                                                                                               'type_hint': None}},
+                                                                  'col': None,
+                                                                  'end': 164,
+                                                                  'file': './vb6-toolbox/Dates/GmtDateTime.bas',
+                                                                  'hash': '89c763e9e607740d',
+                                                                  'name': 'GmtStringToDate',
+                                                                  'ret': ['GmtStringToDate'],
+                                                                  'return_type': 'Date',
+                                                                  'scope': 'GmtDateTime',
+                                                                  'source': 'Public Function GmtStringToDate(ByVal internetDateStr As String _\n'
+                                                                            '                              ) As Date\n'
+                                                                            '    On Error GoTo ErrH\n'
+                                                                            '    \n'
+                                                                            '    internetDateStr = Trim$(internetDateStr)\n'
+                                                                            '    \n'
+                                                                            '    If Mid$(DateString, 11, 1) = "T" Then\n'
+                                                                            '        GmtStringToDate = Iso8601TimeToLocalVbTime(internetDateStr)\n'
+                                                                            '    Else\n'
+                                                                            '        GmtStringToDate = Rfc822TimeToLocalVbTime(internetDateStr)\n'
+                                                                            '    End If\n'
+                                                                            '    \n'
+                                                                            'ErrH: Blame "GmtStringToDate"\n'
+                                                                            'End Function',
+                                                                  'start': 151,
+                                                                  'visibility': 'Public'},
+                                              'GmtTimeDifference': {'col': None,
+                                                                    'end': 116,
+                                                                    'file': './vb6-toolbox/Dates/GmtDateTime.bas',
+                                                                    'hash': '89c763e9e607740d',
+                                                                    'name': 'GmtTimeDifference',
+                                                                    'ret': ['GmtTimeDifference'],
+                                                                    'return_type': 'Long',
+                                                                    'scope': 'GmtDateTime',
+                                                                    'source': 'Public Function GmtTimeDifference() As Long\n'
+                                                                              '    Dim tz As TIME_ZONE_INFORMATION, retCode&\n'
+                                                                              '    \n'
+                                                                              '    \n'
+                                                                              "    ' retrieve the time zone information from API\n"
+                                                                              '    retCode = GetTimeZoneInformation(tz)\n'
+                                                                              '    \n'
+                                                                              '    \n'
+                                                                              "    ' convert to seconds\n"
+                                                                              '    GmtTimeDifference = -tz.Bias * 60\n'
+                                                                              '    \n'
+                                                                              '    \n'
+                                                                              "    ' if we are in daylight  saving time, apply the bias.\n"
+                                                                              '    If retCode = TIME_ZONE_ID_DAYLIGHT& Then\n'
+                                                                              '        \n'
+                                                                              "        ' if tz.DaylightDate.wMonth = 0 then the daylight saving time change "
+                                                                              "doesn't occur\n"
+                                                                              '        If tz.DaylightDate.wMonth <> 0 Then GmtTimeDifference _\n'
+                                                                              '            = GmtTimeDifference - tz.DaylightBias * 60\n'
+                                                                              '    End If\n'
+                                                                              '    \n'
+                                                                              'ErrH: Blame "GmtTimeDifference"\n'
+                                                                              'End Function',
+                                                                    'start': 95,
+                                                                    'visibility': 'Public'},
+                                              'Iso8601TimeToLocalVbTime': {'args': {'sIso8601': {'as_type': 'String',
+                                                                                                 'has_default': None,
+                                                                                                 'name': 'sIso8601',
+                                                                                                 'optional': None,
+                                                                                                 'scope': 'GmtDateTime.Iso8601TimeToLocalVbTime',
+                                                                                                 'type_hint': None}},
+                                                                           'col': None,
+                                                                           'end': 239,
+                                                                           'file': './vb6-toolbox/Dates/GmtDateTime.bas',
+                                                                           'hash': '89c763e9e607740d',
+                                                                           'name': 'Iso8601TimeToLocalVbTime',
+                                                                           'ret': ['Iso8601TimeToLocalVbTime'],
+                                                                           'return_type': 'Date',
+                                                                           'scope': 'GmtDateTime',
+                                                                           'source': 'Private Function Iso8601TimeToLocalVbTime(ByVal sIso8601 As String) As '
+                                                                                     'Date\n'
+                                                                                     '\n'
+                                                                                     "    'format of the time is similar to this: 1997-07-16T19:20:30+01:00\n"
+                                                                                     "    'or                                     1997-07-16T19:20:30Z or "
+                                                                                     '2003-10-09T09:40:46Z\n'
+                                                                                     "    'where Z is UTC (aka GMT time)\n"
+                                                                                     '    \n'
+                                                                                     "    'formatting breakdown\n"
+                                                                                     "    '                1012141618202224\n"
+                                                                                     "    '       1997-07-16T19:20:30+01:00\n"
+                                                                                     '\n'
+                                                                                     "    '       1234567891113151719212325\n"
+                                                                                     '    \n'
+                                                                                     '    Dim sYear As String\n'
+                                                                                     '    Dim sMonth As String\n'
+                                                                                     '\n'
+                                                                                     '    Dim sDay As String\n'
+                                                                                     '    Dim sHour As String\n'
+                                                                                     '    Dim sMinute As String\n'
+                                                                                     '\n'
+                                                                                     '    Dim sSecond As String\n'
+                                                                                     '    Dim sTimeZone As String\n'
+                                                                                     '    Dim dtDateTime As Date\n'
+                                                                                     '\n'
+                                                                                     '    Dim bSign As Boolean\n'
+                                                                                     '    Dim dGMT As Long\n'
+                                                                                     '\n'
+                                                                                     '    sYear = Left$(sIso8601, 4)\n'
+                                                                                     '    sMonth = Mid$(sIso8601, 6, 2)\n'
+                                                                                     '    sDay = Mid$(sIso8601, 9, 2)\n'
+                                                                                     '    sHour = Mid$(sIso8601, 12, 2)\n'
+                                                                                     '    sMinute = Mid$(sIso8601, 15, 2)\n'
+                                                                                     '    sSecond = Mid$(sIso8601, 18, 2)\n'
+                                                                                     '    sTimeZone = Mid$(sIso8601, 20)\n'
+                                                                                     '    \n'
+                                                                                     '    dtDateTime = CDate(DateSerial(sYear, sMonth, sDay) & " " & _\n'
+                                                                                     '                                     TimeSerial(sHour, sMinute, '
+                                                                                     'sSecond))\n'
+                                                                                     '                                     \n'
+                                                                                     '                                         \n'
+                                                                                     "    'replace Z with +00:00 for easier processing\n"
+                                                                                     '    sTimeZone = Replace(sTimeZone, "Z", "+00:00", , , vbTextCompare)\n'
+                                                                                     '    \n'
+                                                                                     "    'get the size\n"
+                                                                                     '    bSign = IIf(Left$(sTimeZone, 1) = "+", True, False)\n'
+                                                                                     '    \n'
+                                                                                     '\n'
+                                                                                     "    'grab the hour & minutes\n"
+                                                                                     '    dGMT = Val(Mid$(sTimeZone, Len(sTimeZone) - 3, 2)) + '
+                                                                                     '(CInt(Right$(sTimeZone, 2)) * 100 / 60)\n'
+                                                                                     '    \n'
+                                                                                     '    If bSign Then\n'
+                                                                                     '        dtDateTime = DateAdd("H", -dGMT, dtDateTime)\n'
+                                                                                     '    Else\n'
+                                                                                     '\n'
+                                                                                     '        dtDateTime = DateAdd("H", dGMT, dtDateTime)\n'
+                                                                                     '    End If\n'
+                                                                                     '    \n'
+                                                                                     '    Iso8601TimeToLocalVbTime = GmtDateLocal(dtDateTime)\n'
+                                                                                     '    \n'
+                                                                                     '    \n'
+                                                                                     '    \n'
+                                                                                     'End Function',
+                                                                           'start': 180,
+                                                                           'visibility': 'Private'},
+                                              'Rfc822TimeToLocalVbTime': {'args': {'sRfc822': {'as_type': 'String',
+                                                                                               'has_default': None,
+                                                                                               'name': 'sRfc822',
+                                                                                               'optional': None,
+                                                                                               'scope': 'GmtDateTime.Rfc822TimeToLocalVbTime',
+                                                                                               'type_hint': None}},
+                                                                          'col': None,
+                                                                          'end': 324,
+                                                                          'file': './vb6-toolbox/Dates/GmtDateTime.bas',
+                                                                          'hash': '89c763e9e607740d',
+                                                                          'name': 'Rfc822TimeToLocalVbTime',
+                                                                          'ret': ['Rfc822TimeToLocalVbTime'],
+                                                                          'return_type': 'Date',
+                                                                          'scope': 'GmtDateTime',
+                                                                          'source': 'Private Function Rfc822TimeToLocalVbTime(sRfc822 As String) As Date\n'
+                                                                                    '\n'
+                                                                                    '    Dim uSystemTime As SYSTEMTIME\n'
+                                                                                    '    Dim sWWW As String\n'
+                                                                                    '    Dim iHours As Integer\n'
+                                                                                    '\n'
+                                                                                    '    Dim dGMT As Long\n'
+                                                                                    '    Dim sHourDifferential As String\n'
+                                                                                    '    Dim dtDateTime As Date\n'
+                                                                                    '\n'
+                                                                                    '    \n'
+                                                                                    '    Dim sSign As String\n'
+                                                                                    '    Dim bSign As Boolean\n'
+                                                                                    '    Dim sEscapedTime As String\n'
+                                                                                    '\n'
+                                                                                    '    Dim sTimeZoneString As String\n'
+                                                                                    '    Dim iPos As Integer\n'
+                                                                                    "    'true = positive\n"
+                                                                                    '\n'
+                                                                                    "    'false = negative\n"
+                                                                                    '    \n'
+                                                                                    '    \n'
+                                                                                    "    '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"
+                                                                                    '    sWWW = sRfc822\n'
+                                                                                    '    \n'
+                                                                                    '    If InStr(1, sWWW, "GMT", vbTextCompare) > 0 Then\n'
+                                                                                    '        sWWW = Replace(sWWW, "GMT", "+0000")\n'
+                                                                                    '    End If\n'
+                                                                                    '\n'
+                                                                                    "    'check to make sure that the time zone is included\n"
+                                                                                    '\n'
+                                                                                    '    If Len(Trim$(sWWW)) = 25 Then\n'
+                                                                                    "        'add time zone\n"
+                                                                                    '        sWWW = sWWW & " +0000"\n'
+                                                                                    '    End If\n'
+                                                                                    '\n'
+                                                                                    '    \n'
+                                                                                    '    If (InStr(1, sWWW, ",") = 0) Then sWWW = "Thu, " & sWWW\n'
+                                                                                    '    Call InternetTimeToSystemTime(sWWW, uSystemTime, 0&)\n'
+                                                                                    '    With uSystemTime\n'
+                                                                                    '        dtDateTime = CDate(DateSerial(.wYear, .wMonth, .wDay) & " " & _\n'
+                                                                                    '                                     TimeSerial(.wHour, .wMinute, '
+                                                                                    '.wSecond))\n'
+                                                                                    '    End With\n'
+                                                                                    '\n'
+                                                                                    '    \n'
+                                                                                    "    'get the sign from the back end\n"
+                                                                                    "    'remove colons, in case the time is 07:00 instead of 0700\n"
+                                                                                    '    sEscapedTime = Replace(sWWW, ":", "")\n'
+                                                                                    '    \n'
+                                                                                    '    sSign = Mid$(sEscapedTime, Len(sEscapedTime) - 4, 1)\n'
+                                                                                    '    bSign = IIf(sSign = "-", False, True)\n'
+                                                                                    '    \n'
+                                                                                    "    'grab the hour & minutes\n"
+                                                                                    '\n'
+                                                                                    '    iPos = InStrRev(sWWW, " ")\n'
+                                                                                    '    If iPos > 0 Then\n'
+                                                                                    "        'get rid of the space and the +/- sign\n"
+                                                                                    '        sTimeZoneString = Mid$(sWWW, iPos + 2)\n'
+                                                                                    '        \n'
+                                                                                    "        'escape it\n"
+                                                                                    '        sTimeZoneString = Replace(sTimeZoneString, ":", "")\n'
+                                                                                    '        sTimeZoneString = Replace(sTimeZoneString, " ", "")\n'
+                                                                                    '        \n'
+                                                                                    '\n'
+                                                                                    "        'at this point we should have the following: 0700\n"
+                                                                                    '        dGMT = Val(Left$(sTimeZoneString, 2)) + Val(Right$(sWWW, 2)) * '
+                                                                                    '100 / 60\n'
+                                                                                    '        \n'
+                                                                                    "        'dGMT = Val(Mid$(sWWW, Len(sWWW) - 3, 2)) + (CInt(Right$(sWWW, "
+                                                                                    '2)) * 100 / 60)\n'
+                                                                                    '    Else\n'
+                                                                                    '        dGMT = 0\n'
+                                                                                    '    End If\n'
+                                                                                    '\n'
+                                                                                    '        \n'
+                                                                                    '        \n'
+                                                                                    '    If bSign Then\n'
+                                                                                    '        dtDateTime = DateAdd("H", -dGMT, dtDateTime)\n'
+                                                                                    '    Else\n'
+                                                                                    '        dtDateTime = DateAdd("H", dGMT, dtDateTime)\n'
+                                                                                    '    End If\n'
+                                                                                    '    \n'
+                                                                                    '    Rfc822TimeToLocalVbTime = GmtDateLocal(dtDateTime)\n'
+                                                                                    '    \n'
+                                                                                    '\n'
+                                                                                    'End Function',
+                                                                          'start': 241,
+                                                                          'visibility': 'Private'}},
+                                     'name': 'GmtDateTime',
+                                     'sub': {'Blame': {'args': {'currntProcedure': {'as_type': 'String',
+                                                                                    'has_default': None,
+                                                                                    'name': 'currntProcedure',
+                                                                                    'optional': None,
+                                                                                    'scope': 'GmtDateTime.Blame',
+                                                                                    'type_hint': None},
+                                                                'errorDescrption': {'as_type': 'String',
+                                                                                    'has_default': None,
+                                                                                    'name': 'errorDescrption',
+                                                                                    'optional': True,
+                                                                                    'scope': 'GmtDateTime.Blame',
+                                                                                    'type_hint': None},
+                                                                'errorNumbr': {'as_type': 'GmtDateTimeErrors',
+                                                                               'default': '-1',
+                                                                               'has_default': True,
+                                                                               'name': 'errorNumbr',
+                                                                               'optional': True,
+                                                                               'scope': 'GmtDateTime.Blame',
+                                                                               'type_hint': None}},
+                                                       'col': None,
+                                                       'end': 375,
+                                                       'file': './vb6-toolbox/Dates/GmtDateTime.bas',
+                                                       'hash': '89c763e9e607740d',
+                                                       'name': 'Blame',
+                                                       'scope': 'GmtDateTime',
+                                                       'source': 'Private Sub Blame(ByVal currntProcedure As String _\n'
+                                                                 '                , Optional ByVal errorDescrption As String _\n'
+                                                                 '                , Optional ByVal errorNumbr As GmtDateTimeErrors = -1 _\n'
+                                                                 '                )\n'
+                                                                 '    Call SaveError\n'
+                                                                 '    Call LoadError(currntProcedure, errorDescrption, errorNumbr)\n'
+                                                                 'End Sub',
+                                                       'start': 369,
+                                                       'visibility': 'Private'},
+                                             'ErrRaise': {'args': {'errSource': {'as_type': 'String',
+                                                                                 'has_default': None,
+                                                                                 'name': 'errSource',
+                                                                                 'optional': True,
+                                                                                 'scope': 'GmtDateTime.ErrRaise',
+                                                                                 'type_hint': None},
+                                                                   'errorMsg': {'as_type': 'String',
+                                                                                'has_default': None,
+                                                                                'name': 'errorMsg',
+                                                                                'optional': None,
+                                                                                'scope': 'GmtDateTime.ErrRaise',
+                                                                                'type_hint': None},
+                                                                   'errorNumbr': {'as_type': 'GmtDateTimeErrors',
+                                                                                  'default': '-1',
+                                                                                  'has_default': True,
+                                                                                  'name': 'errorNumbr',
+                                                                                  'optional': True,
+                                                                                  'scope': 'GmtDateTime.ErrRaise',
+                                                                                  'type_hint': None}},
+                                                          'col': None,
+                                                          'end': 342,
+                                                          'file': './vb6-toolbox/Dates/GmtDateTime.bas',
+                                                          'hash': '89c763e9e607740d',
+                                                          'name': 'ErrRaise',
+                                                          'scope': 'GmtDateTime',
+                                                          'source': 'Private Sub ErrRaise(errorMsg As String _\n'
+                                                                    '                   , Optional errorNumbr As GmtDateTimeErrors = -1 _\n'
+                                                                    '                   , Optional errSource As String _\n'
+                                                                    '                   )\n'
+                                                                    '    Err.Raise errorNumbr, IIf(LenB(errSource) = 0, TypeName(Me), errSource), errorMsg\n'
+                                                                    'End Sub',
+                                                          'start': 337,
+                                                          'visibility': 'Private'},
+                                             'ErrorIf': {'args': {'errCondition': {'as_type': 'Boolean',
+                                                                                   'has_default': None,
+                                                                                   'name': 'errCondition',
+                                                                                   'optional': None,
+                                                                                   'scope': 'GmtDateTime.ErrorIf',
+                                                                                   'type_hint': None},
+                                                                  'errorMsg': {'as_type': 'String',
+                                                                               'has_default': None,
+                                                                               'name': 'errorMsg',
+                                                                               'optional': None,
+                                                                               'scope': 'GmtDateTime.ErrorIf',
+                                                                               'type_hint': None},
+                                                                  'errorNumbr': {'as_type': 'GmtDateTimeErrors',
+                                                                                 'default': '-1',
+                                                                                 'has_default': True,
+                                                                                 'name': 'errorNumbr',
+                                                                                 'optional': True,
+                                                                                 'scope': 'GmtDateTime.ErrorIf',
+                                                                                 'type_hint': None}},
+                                                         'col': None,
+                                                         'end': 349,
+                                                         'file': './vb6-toolbox/Dates/GmtDateTime.bas',
+                                                         'hash': '89c763e9e607740d',
+                                                         'name': 'ErrorIf',
+                                                         'scope': 'GmtDateTime',
+                                                         'source': 'Private Sub ErrorIf(errCondition As Boolean _\n'
+                                                                   '                  , errorMsg As String _\n'
+                                                                   '                  , Optional errorNumbr As GmtDateTimeErrors = -1 _\n'
+                                                                   '                  )\n'
+                                                                   '    If errCondition Then ErrRaise errorMsg, errorNumbr\n'
+                                                                   'End Sub',
+                                                         'start': 344,
+                                                         'visibility': 'Private'},
+                                             'LoadError': {'args': {'currntProcedure': {'as_type': 'String',
+                                                                                        'has_default': None,
+                                                                                        'name': 'currntProcedure',
+                                                                                        'optional': None,
+                                                                                        'scope': 'GmtDateTime.LoadError',
+                                                                                        'type_hint': None},
+                                                                    'errorDescrption': {'as_type': 'String',
+                                                                                        'has_default': None,
+                                                                                        'name': 'errorDescrption',
+                                                                                        'optional': True,
+                                                                                        'scope': 'GmtDateTime.LoadError',
+                                                                                        'type_hint': None},
+                                                                    'errorNumbr': {'as_type': 'GmtDateTimeErrors',
+                                                                                   'default': '-1',
+                                                                                   'has_default': True,
+                                                                                   'name': 'errorNumbr',
+                                                                                   'optional': True,
+                                                                                   'scope': 'GmtDateTime.LoadError',
+                                                                                   'type_hint': None}},
+                                                           'col': None,
+                                                           'end': 407,
+                                                           'file': './vb6-toolbox/Dates/GmtDateTime.bas',
+                                                           'hash': '89c763e9e607740d',
+                                                           'name': 'LoadError',
+                                                           'scope': 'GmtDateTime',
+                                                           'source': 'Private Sub LoadError(ByVal currntProcedure As String _\n'
+                                                                     '                    , Optional ByVal errorDescrption As String _\n'
+                                                                     '                    , Optional ByVal errorNumbr As GmtDateTimeErrors = -1 _\n'
+                                                                     '                    )\n'
+                                                                     '    With mError\n'
+                                                                     '        If Not .HasError Then Exit Sub\n'
+                                                                     '            \n'
+                                                                     '        If LenB(errorDescrption) = 0 Then\n'
+                                                                     '            errorDescrption = .Description\n'
+                                                                     '        Else\n'
+                                                                     '            errorDescrption = .Description & vbCrLf & errorDescrption\n'
+                                                                     '        End If\n'
+                                                                     '        \n'
+                                                                     '        currntProcedure = "GmtDateTime." & currntProcedure & "()"\n'
+                                                                     '\n'
+                                                                     '        If errorNumbr = -1 Then errorNumbr = .Number\n'
+                                                                     '        \n'
+                                                                     '        Select Case errorNumbr\n'
+                                                                     '            Case NotInitted\n'
+                                                                     '                errorDescrption = "GmtDateTime not initted." & vbCrLf _\n'
+                                                                     '                               & "Please call GmtDateTime" _\n'
+                                                                     '                               & ".Init() before " & currntProcedure & "."\n'
+                                                                     '            \n'
+                                                                     '            Case Else\n'
+                                                                     '                errorDescrption = currntProcedure & vbCrLf & errorDescrption\n'
+                                                                     '        End Select\n'
+                                                                     '\n'
+                                                                     '        ErrRaise errorDescrption, errorNumbr, .Source\n'
+                                                                     '            \n'
+                                                                     '    End With\n'
+                                                                     'End Sub',
+                                                           'start': 377,
+                                                           'visibility': 'Private'},
+                                             'SaveError': {'col': None,
+                                                           'end': 367,
+                                                           'file': './vb6-toolbox/Dates/GmtDateTime.bas',
+                                                           'hash': '89c763e9e607740d',
+                                                           'name': 'SaveError',
+                                                           'scope': 'GmtDateTime',
+                                                           'source': 'Private Sub SaveError()\n'
+                                                                     '    With mError\n'
+                                                                     '        If Err Then\n'
+                                                                     '            .HasError = True\n'
+                                                                     '            .Description = Err.Description\n'
+                                                                     '            .Number = Err.Number\n'
+                                                                     '            .Source = Err.Source\n'
+                                                                     '            \n'
+                                                                     '        Else\n'
+                                                                     '            .HasError = False\n'
+                                                                     '            .Description = vbNullString\n'
+                                                                     '            .Number = 0\n'
+                                                                     '            .Source = vbNullString\n'
+                                                                     '        End If\n'
+                                                                     '    End With\n'
+                                                                     '    Err.Clear\n'
+                                                                     'End Sub',
+                                                           'start': 351,
+                                                           'visibility': 'Private'}},
+                                     'type': 'module'},
+                     'attributes': {'VB_Name': '"GmtDateTime"'},
+                     'config': {},
+                     'header': {},
+                     'options': {'Option Explicit': 'Option Explicit'}}}}
