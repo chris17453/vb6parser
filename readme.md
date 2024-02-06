@@ -28,11 +28,21 @@ make vb6
 ## run
 
 ```bash
-python vb6/vb6.py <filename.py>
+# --json for json output, Optional
+# -- pprint for python prety print, Optional
+python vb6/vb6.py <filename.py> <--json> <--pprint>
 
 # this is the test run with test code
 make test-single
 make test-class
+```
+
+## import in python
+
+```bash
+from .vb6 import parse
+data=parse(file)
+print(data)
 ```
 
 ## G4 files
