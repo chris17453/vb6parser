@@ -440,10 +440,10 @@ s
         self.depth -= 1
         info("exit", ctx, self.depth)
 
-
     # Enter a parse tree produced by VisualBasic6Parser#moduleHeader.
     def enterModuleHeader(self, ctx:VisualBasic6Parser.ModuleHeaderContext):
         self.depth += 1
+    
         info("enter", ctx, self.depth)
 
     # Exit a parse tree produced by VisualBasic6Parser#moduleHeader.
@@ -452,13 +452,35 @@ s
         info("exit", ctx, self.depth)
 
 
-    # Enter a parse tree produced by VisualBasic6Parser#moduleConfig.
-    def enterModuleConfig(self, ctx:VisualBasic6Parser.ModuleConfigContext):
+
+    # Enter a parse tree produced by VisualBasic6Parser#moduleBlock.
+    def enterModuleBlock(self, ctx:VisualBasic6Parser.ModuleBlockContext):
         self.depth += 1
         info("enter", ctx, self.depth)
 
-    # Exit a parse tree produced by VisualBasic6Parser#moduleConfig.
-    def exitModuleConfig(self, ctx:VisualBasic6Parser.ModuleConfigContext):
+    # Exit a parse tree produced by VisualBasic6Parser#moduleBlock.
+    def exitModuleBlock(self, ctx:VisualBasic6Parser.ModuleBlockContext):
+        self.depth -= 1
+        info("exit", ctx, self.depth)
+
+   # Enter a parse tree produced by VisualBasic6Parser#moduleAttributes.
+    def enterModuleAttributes(self, ctx:VisualBasic6Parser.ModuleAttributesContext):
+        self.depth += 1
+        info("enter", ctx, self.depth)
+
+    # Exit a parse tree produced by VisualBasic6Parser#moduleAttributes.
+    def exitModuleAttributes(self, ctx:VisualBasic6Parser.ModuleAttributesContext):
+        self.depth -= 1
+        info("exit", ctx, self.depth)
+
+
+    # Enter a parse tree produced by VisualBasic6Parser#moduleBody.
+    def enterModuleBody(self, ctx:VisualBasic6Parser.ModuleBodyContext):
+        self.depth += 1
+        info("enter", ctx, self.depth)
+
+    # Exit a parse tree produced by VisualBasic6Parser#moduleBody.
+    def exitModuleBody(self, ctx:VisualBasic6Parser.ModuleBodyContext):
         self.depth -= 1
         info("exit", ctx, self.depth)
 
@@ -474,16 +496,7 @@ s
         info("exit", ctx, self.depth)
 
 
-    # Enter a parse tree produced by VisualBasic6Parser#moduleAttributes.
-    def enterModuleAttributes(self, ctx:VisualBasic6Parser.ModuleAttributesContext):
-        self.depth += 1
-        info("enter", ctx, self.depth)
-
-    # Exit a parse tree produced by VisualBasic6Parser#moduleAttributes.
-    def exitModuleAttributes(self, ctx:VisualBasic6Parser.ModuleAttributesContext):
-        self.depth -= 1
-        info("exit", ctx, self.depth)
-
+ 
 
     # Enter a parse tree produced by VisualBasic6Parser#moduleOptions.
     def enterModuleOptions(self, ctx:VisualBasic6Parser.ModuleOptionsContext):
@@ -536,17 +549,6 @@ s
 
     # Exit a parse tree produced by VisualBasic6Parser#optionPrivateModuleStmt.
     def exitOptionPrivateModuleStmt(self, ctx:VisualBasic6Parser.OptionPrivateModuleStmtContext):
-        self.depth -= 1
-        info("exit", ctx, self.depth)
-
-
-    # Enter a parse tree produced by VisualBasic6Parser#moduleBody.
-    def enterModuleBody(self, ctx:VisualBasic6Parser.ModuleBodyContext):
-        self.depth += 1
-        info("enter", ctx, self.depth)
-
-    # Exit a parse tree produced by VisualBasic6Parser#moduleBody.
-    def exitModuleBody(self, ctx:VisualBasic6Parser.ModuleBodyContext):
         self.depth -= 1
         info("exit", ctx, self.depth)
 
@@ -646,17 +648,6 @@ s
 
     # Exit a parse tree produced by VisualBasic6Parser#cp_ControlIdentifier.
     def exitCp_ControlIdentifier(self, ctx:VisualBasic6Parser.Cp_ControlIdentifierContext):
-        self.depth -= 1
-        info("exit", ctx, self.depth)
-
-
-    # Enter a parse tree produced by VisualBasic6Parser#moduleBlock.
-    def enterModuleBlock(self, ctx:VisualBasic6Parser.ModuleBlockContext):
-        self.depth += 1
-        info("enter", ctx, self.depth)
-
-    # Exit a parse tree produced by VisualBasic6Parser#moduleBlock.
-    def exitModuleBlock(self, ctx:VisualBasic6Parser.ModuleBlockContext):
         self.depth -= 1
         info("exit", ctx, self.depth)
 

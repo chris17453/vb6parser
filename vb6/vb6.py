@@ -12,7 +12,8 @@
 # Date: 01-30-2024 
 #***********************************************************************************************************************                                                     
 from antlr4 import *
-from utils import file_fragment
+import xxhash
+from utils import file_fragment, dump, find_key_case_insensitive
 import argparse 
 import inspect 
 from pprint import pprint
@@ -25,21 +26,6 @@ def get_function_name():
     # get the frame object of the function
     frame = inspect.currentframe()
     return frame.f_code.co_name
-
-def dump(obj):
-    for attr in dir(obj):
-        # Skip built-in attributes
-        if attr.startswith('__') and attr.endswith('__'):
-            continue
-
-        try:
-            value = getattr(obj, attr)
-            print(f"obj.{attr} = {repr(value)}")
-            print("-------------------------------------------")
-        except Exception as e:
-            print(f"Error accessing obj.{attr}: {e}")
-
-    print("===========================================")
 
 def info(layer,ctx,depth):
     pad=' '*depth
@@ -65,8 +51,6 @@ def info(layer,ctx,depth):
     print(f"{pad}{prefix} {scope} - {name} token:{start} - {stop} : Rule:{rule}")
     print("Text:",ctx.getText())    
 
-
-
 class gardner:
     def __init__(self):
         self.data={'root':{}}
@@ -75,7 +59,7 @@ class gardner:
         self.rescope=None
         self.scope_type=None
         self.scope_depth=None
-        self.components=['class','func','sub','args','vars','ret']
+        self.components=['module','class','func','sub','args','vars','ret']
 
     def expect(self,scope_type,depth):
         if scope_type=="func":
@@ -118,27 +102,41 @@ class gardner:
                     exit()
         return cur_obj
 
-    def add_class(self,scope,name):
+    def add_type(self,scope,layer,name,data=None):
         obj=self.get_obj(scope)
-        if 'class' not in obj:
-            obj['class']={}
+        
+        # create layer if not found
+        if  layer not in obj:
+            obj[layer]={}
 
-        obj['class'][name]={'name':name,
-                    'type':'class'}
+        # add defaults
+        obj[layer][name]={'name':name,
+                    'type':layer}
+        # add data obj if there is any
+        if data:
+            obj.update(data)
+
+    def add_module(self,scope,name,data=None):
+        self.add_type(scope,'module',name,data)
+
+    def add_class(self,scope,name,data=None):
+        self.add_type(scope,'class',name,data)
     
     def add_func(self,scope,name,start=None,end=None,column=None,return_type=None,visibility=None,source=None,file=None):
         obj=self.get_obj(scope)
         if 'func' not in obj:
             obj['func']={}
 
-        obj['func'][name]={'name':name,'start':start,'end':end,'col':column,'return_type':return_type,'visibility':visibility,'source':source,'scope':scope,'file':file}
+        source_hash=xxhash.xxh64('xxhash', seed=314159).hexdigest()
+
+        obj['func'][name]={'name':name,'start':start,'end':end,'col':column,'return_type':return_type,'visibility':visibility,'source':source,'scope':scope,'file':file,'hash':source_hash}
 
     def add_sub(self,scope,name,start=None,end=None,column=None,visibility=None,source=None,file=None):
         obj=self.get_obj(scope)
         if 'sub' not in obj:
             obj['sub']={}
-
-        obj['sub'][name]={'name':name,'start':start,'end':end,'col':column,'visibility':visibility,'source':source,'scope':scope,'file':file}
+        source_hash=xxhash.xxh64('xxhash', seed=314159).hexdigest()
+        obj['sub'][name]={'name':name,'start':start,'end':end,'col':column,'visibility':visibility,'source':source,'scope':scope,'file':file,'hash':source_hash}
 
     def add_var(self,scope,name):
         obj=self.get_obj(scope)
@@ -191,19 +189,70 @@ class MyListener(VisualBasic6ParserListener):
     def enterModule(self, ctx:VisualBasic6Parser.ModuleContext):
         self.depth += 1
         info("entremodule", ctx, self.depth)
-        
-    def bob():
-        ambiguousIdentifier = ctx.ambiguousIdentifier()
-        #dump(ctx)
-        
-        start_line = ctx.start.line
-        end_line = ctx.stop.line
-        if ambiguousIdentifier !=None:
-            ambiguousIdentifier = ambiguousIdentifier.getText()
+        attributes={}
+        header={}
+        config={}
+        options={}
+
+        mh=ctx.moduleHeader()
+        if mh:
+            mh_version=mh.VERSION()
+            mh_class=mh.CLASS()
+            mh_version_no=mh.doubleLiteral()
+            if mh_version:
+                mh_version=mh_version.getText()
+            if mh_class:
+                mh_class=mh_class.getText()
+                header['class']=mh_class
+            if mh_version_no:
+                mh_version_no=mh_version_no.getText()
+                header['version']=mh_version_no
+
+        mc=ctx.moduleConfig()
+        if mc:
+            config_elements=mc.moduleConfigElement()
+            for element in config_elements:
+                element_id=element.ambiguousIdentifier().getText()
+                element_literal=element.literal().getText()
+                config[element_id]=element_literal
+
+            #print(f"Class: {mh_class} - Version: {mh_version} {mh_version_no}")
+
+        mattr=ctx.moduleAttributes()
+        if mattr:
+            attribs=mattr.attributeStmt()
+            #dump(ctx)
+            # had to get wonky here. I couldnt find the name splot from the value anywhere..
+            if attribs:
+                for attrib in attribs:
+                    attr=attrib.getText()
+                    attr_value=attrib.literal()
+                    tokens=attr.split('=')
+                    attr_name=tokens[0][9:].strip()
+                    attr_value=attr_value[0].getText()
+                    attributes[attr_name]=attr_value
+                    #print(f"{attr_name}={attr_value}")
+        moption=ctx.moduleOptions()
+        if moption:
+            moptions=moption.moduleOption()
+            for option in moptions:
+                options[option.getText()]=option.getText()
+
+
+        data={'attributes':attributes,'header':header,'config':config,'options':options}
+        attrib_name_key=find_key_case_insensitive(attributes,'VB_Name')
+        if attrib_name_key:
+            vb_name=attributes[attrib_name_key].strip("\"'")
+            # you never leave this scope.. its cool its the module you're in
             scope=self.tree.get_scope()
-            self.tree.add_scope(ambiguousIdentifier)
-            self.tree.add_class(scope,ambiguousIdentifier,start=start_line,end=end_line)
-        info("enter", ctx, self.depth)
+            if mh and mh_class.lower()=="class":
+                self.tree.add_class(scope,vb_name,data)
+            else:
+                self.tree.add_module(scope,vb_name,data)
+            # decend into the scope
+            self.tree.add_scope(vb_name)
+
+
 
     # Exit a parse tree produced by VisualBasic6Parser#module.
     def exitModule(self, ctx:VisualBasic6Parser.ModuleContext):
@@ -418,7 +467,7 @@ def main():
     listener = MyListener(source=args.file)
     walker = ParseTreeWalker()
     walker.walk(listener, tree)
-    pprint(listener.tree.data)
+    pprint(listener.tree.data,width=160,compact=False)
 
 
 if __name__ == "__main__":

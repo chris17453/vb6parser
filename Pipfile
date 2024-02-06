@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 argparse = "*"
 antlr4-python3-runtime = "==4.10"
+xxhash = "*"
 
 [dev-packages]
 

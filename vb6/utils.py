@@ -34,3 +34,26 @@ def file_fragment(file_name, start=1, start_col=1, end=None, end_col=None):
 
     except FileNotFoundError:
         return "File not found"
+
+def find_key_case_insensitive(dictionary, key):
+    key_lower = key.lower()
+    for k, v in dictionary.items():
+        if k.lower() == key_lower:
+            return k
+    return None  # Key not found
+
+
+def dump(obj):
+    for attr in dir(obj):
+        # Skip built-in attributes
+        if attr.startswith('__') and attr.endswith('__'):
+            continue
+
+        try:
+            value = getattr(obj, attr)
+            print(f"obj.{attr} = {repr(value)}")
+            print("-------------------------------------------")
+        except Exception as e:
+            print(f"Error accessing obj.{attr}: {e}")
+
+    print("===========================================")
