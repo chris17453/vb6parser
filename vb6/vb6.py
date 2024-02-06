@@ -245,7 +245,7 @@ class MyListener(VisualBasic6ParserListener):
             vb_name=attributes[attrib_name_key].strip("\"'")
             # you never leave this scope.. its cool its the module you're in
             scope=self.tree.get_scope()
-            if mh and mh_class.lower()=="class":
+            if mh and mh_class and mh_class.lower()=="class":
                 self.tree.add_class(scope,vb_name,data)
             else:
                 self.tree.add_module(scope,vb_name,data)
