@@ -3,8 +3,8 @@
 ## System prequisites
 
 - antlr4
-#
-# Python prequisites
+
+## Python prequisites
 
 - antlr4-python3-runtime
 - argparse

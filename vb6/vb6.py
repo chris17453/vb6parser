@@ -10,18 +10,25 @@
 #                                                                                                                       
 # Author: Chris Watkins
 # Date: 01-30-2024 
-#***********************************************************************************************************************                                                     
-from antlr4 import *
+#***********************************************************************************************************************
+
+# internal includes
+from utils import  dump, find_key_case_insensitive, read_file
+from tree import gardner
+
+# python modules
 import json
-import xxhash
-from utils import file_fragment, dump, find_key_case_insensitive
+from antlr4 import *
 import argparse 
 import inspect 
 from pprint import pprint
-# Import generated lexer and parser
+
+# generated lexer and parser modules
 from VisualBasic6Lexer import VisualBasic6Lexer
 from VisualBasic6Parser import VisualBasic6Parser
 from VisualBasic6ParserListener import VisualBasic6ParserListener
+
+
 
 def get_function_name():
     # get the frame object of the function
@@ -52,118 +59,6 @@ def info(layer,ctx,depth):
     print(f"{pad}{prefix} {scope} - {name} token:{start} - {stop} : Rule:{rule}")
     print("Text:",ctx.getText())    
 
-class gardner:
-    def __init__(self):
-        self.data={'root':{}}
-        self.scope=[]
-        self.fragment={}
-        self.rescope=None
-        self.scope_type=None
-        self.scope_depth=None
-        self.components=['module','class','func','sub','args','vars','ret']
-
-    def expect(self,scope_type,depth):
-        if scope_type=="func":
-            self.rescope=True
-        self.scope_depth=depth
-        self.scope_type=scope_type
-    
-    def add_scope(self,name):
-        self.scope.append(name)
-
-    def get_scope(self,append=None):
-        if append:
-            scope=self.scope.copy()
-            scope.append(append)
-            return ".".join(scope)
-        return ".".join(self.scope)
-
-    def add_component(self,component):
-        if component not in self.components:
-            self.components.append(component)
-
-    def get_obj(self,scope):
-        cur_obj=self.data['root']
-        component=""
-
-        part=""
-        if len(scope)>0 and scope !="":
-            path=scope.split(".")
-            for part in path:
-                found=None    
-                for component in self.components:
-                    if component in cur_obj:
-                        if part in cur_obj[component]:
-                            cur_obj=cur_obj[component][part]
-                            found=True
-                            break
-                if found==None:
-                    print(self.data)
-                    print (f"Cant find {part}")
-                    exit()
-        return cur_obj
-
-    def add_type(self,scope,layer,name,data=None):
-        obj=self.get_obj(scope)
-        
-        # create layer if not found
-        if  layer not in obj:
-            obj[layer]={}
-
-        # add defaults
-        obj[layer][name]={'name':name,
-                    'type':layer}
-        # add data obj if there is any
-        if data:
-            obj[layer].update(data)
-
-    def add_module(self,scope,name,data=None):
-        self.add_type(scope,'module',name,data)
-
-    def add_class(self,scope,name,data=None):
-        self.add_type(scope,'class',name,data)
-    
-    def add_func(self,scope,name,start=None,end=None,column=None,return_type=None,visibility=None,source=None,file=None):
-        obj=self.get_obj(scope)
-        if 'func' not in obj:
-            obj['func']={}
-
-        source_hash=xxhash.xxh64('xxhash', seed=314159).hexdigest()
-
-        obj['func'][name]={'name':name,'start':start,'end':end,'col':column,'return_type':return_type,'visibility':visibility,'source':source,'scope':scope,'file':file,'hash':source_hash}
-
-    def add_sub(self,scope,name,start=None,end=None,column=None,visibility=None,source=None,file=None):
-        obj=self.get_obj(scope)
-        if 'sub' not in obj:
-            obj['sub']={}
-        source_hash=xxhash.xxh64('xxhash', seed=314159).hexdigest()
-        obj['sub'][name]={'name':name,'start':start,'end':end,'col':column,'visibility':visibility,'source':source,'scope':scope,'file':file,'hash':source_hash}
-
-    def add_var(self,scope,name):
-        obj=self.get_obj(scope)
-        if 'vars' not in obj:
-            obj['vars']={}
-
-        obj['vars'][name]={'name':name}
-
-    def add_ret(self,scope,value):
-        obj=self.get_obj(scope)
-        if 'ret' not in obj:
-            obj['ret']=[]
-
-        obj['ret'].append(value)
-
-    def add_arg(self,scope,arg,default=None,has_default=False,as_type=None,optional=None,type_hint=None):
-        obj=self.get_obj(scope)
-        item={'name':arg,'has_default':has_default,'scope':scope,'optional':optional,'as_type':as_type,'type_hint':type_hint}
-        if has_default==True:
-            item['default']=default
-        if 'args' not in obj:
-            obj['args']={}
-
-        obj['args'][arg]=item
-
-
 # Create a custom listener by subclassing the generated base listener
 class MyListener(VisualBasic6ParserListener):
 
@@ -172,7 +67,7 @@ class MyListener(VisualBasic6ParserListener):
         super().__init__()
         self.source=source
         self.depth=0
-        self.tree=gardner()
+        self.tree=gardner(source)
 
     
     # Enter a parse tree produced by VisualBasic6Parser#startRule.\t\t
@@ -280,11 +175,10 @@ class MyListener(VisualBasic6ParserListener):
 
 
         if ambiguousIdentifier !=None:
-            source=file_fragment(self.source,start=start_line,end=end_line)
             ambiguousIdentifier = ambiguousIdentifier.getText()
             scope=self.tree.get_scope()
             self.tree.add_scope(ambiguousIdentifier)
-            self.tree.add_func(scope,ambiguousIdentifier,start=start_line,end=end_line,return_type=return_type,visibility=visibility,source=source,file=self.source)
+            self.tree.add_func(scope,ambiguousIdentifier,start=start_line,end=end_line,return_type=return_type,visibility=visibility)
             scope=self.tree.get_scope()
             ## VB RETURN VARS are the same name as the function name
             self.tree.add_ret(scope,ambiguousIdentifier)
@@ -356,12 +250,10 @@ class MyListener(VisualBasic6ParserListener):
             visibility=visibility.getText()
 
         if ambiguousIdentifier !=None:
-            source=file_fragment(self.source,start=start_line,end=end_line)
-
             ambiguousIdentifier = ambiguousIdentifier.getText()
             scope=self.tree.get_scope()
             self.tree.add_scope(ambiguousIdentifier)
-            self.tree.add_sub(scope,ambiguousIdentifier,start=start_line,end=end_line,visibility=visibility,source=source,file=self.source)
+            self.tree.add_sub(scope,ambiguousIdentifier,start=start_line,end=end_line,visibility=visibility)
     
         
 
@@ -420,33 +312,6 @@ class MyListener(VisualBasic6ParserListener):
 
 
 
-
-def read_file(file_path):
-    """Reads the content of a file and returns it as a string.
-    
-    Args:
-        file_path (str): The path to the file to be read.
-    
-    Returns:
-        str: The content of the file as a string.
-    
-    Raises:
-        FileNotFoundError: If the file does not exist at the provided path.
-        Exception: If any other error occurs while reading the file.
-    
-    Notes:
-        This function uses the built-in `open()` function to read the content of a file.
-        It returns an error message if the file is not found or an error occurs during reading.
-    """
-    try:
-        with open(file_path, 'r') as file:
-            return file.read()
-    except FileNotFoundError:
-        return "File not found."
-    except Exception as e:
-        return f"An error occurred: {e}"
-
-
 def parse(file):
     # Create a lexer and parser for your input code
     input_code = read_file(file)
@@ -463,7 +328,13 @@ def parse(file):
     listener = MyListener(source=file)
     walker = ParseTreeWalker()
     walker.walk(listener, tree)
-    return listener.tree.data
+    listener.tree.find_uncovered_blocks()
+    listener.tree.find_comment_blocks()
+    blk=listener.tree.classify_and_split_blocks()
+    pprint(blk)
+    pprint(listener.tree.uncovered_blocks)
+    pprint(listener.tree.comment_blocks)
+    return listener.tree
 
 def main():
     parser = argparse.ArgumentParser(description="Parse VB6 code and extract class, function, and variable information.")
@@ -472,12 +343,14 @@ def main():
     parser.add_argument("--pprint", help="Output as python pretyprint", action="store_true")
     args = parser.parse_args()
 
-    data=parse(args.file)
+    tree=parse(args.file)
     if args.json:
-        json_string = json.dumps(data, indent=4)
+        json_string = json.dumps(tree.data, indent=4)
+        print(json_string)
+        json_string = json.dumps(tree.source_data, indent=4)
         print(json_string)
     elif args.pprint:
-        pprint(data,width=160,compact=False)
+        pprint(tree.data,width=160,compact=False)
 
 
 if __name__ == "__main__":

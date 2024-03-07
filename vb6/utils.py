@@ -1,4 +1,28 @@
 
+def read_file(file_path):
+    """Reads the content of a file and returns it as a string.
+    
+    Args:
+        file_path (str): The path to the file to be read.
+    
+    Returns:
+        str: The content of the file as a string.
+    
+    Raises:
+        FileNotFoundError: If the file does not exist at the provided path.
+        Exception: If any other error occurs while reading the file.
+    
+    Notes:
+        This function uses the built-in `open()` function to read the content of a file.
+        It returns an error message if the file is not found or an error occurs during reading.
+    """
+    try:
+        with open(file_path, 'r') as file:
+            return file.read()
+    except FileNotFoundError:
+        return "File not found."
+    except Exception as e:
+        return f"An error occurred: {e}"
 
 
 def file_fragment(file_name, start=1, start_col=1, end=None, end_col=None):

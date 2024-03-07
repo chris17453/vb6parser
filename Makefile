@@ -21,3 +21,4 @@ test-single:
 
 test-class:
 	python vb6/vb6.py "./vb6-toolbox/Data Structures/CollectionWrapper.cls" --json>test/output-class.txt
+	

@@ -1,3 +1,51 @@
+[{'end': 14, 'start': 1, 'type': 'unknown'},
+ {'end': 15, 'start': 15, 'type': 'whitespace'},
+ {'end': 19, 'start': 16, 'type': 'unknown'},
+ {'end': 20, 'start': 20, 'type': 'comment'},
+ {'end': 21, 'start': 21, 'type': 'unknown'},
+ {'end': 22, 'start': 22, 'type': 'whitespace'},
+ {'end': 29, 'start': 23, 'type': 'unknown'},
+ {'end': 30, 'start': 30, 'type': 'whitespace'},
+ {'end': 31, 'start': 31, 'type': 'unknown'},
+ {'end': 32, 'start': 32, 'type': 'whitespace'},
+ {'end': 33, 'start': 33, 'type': 'unknown'},
+ {'end': 36, 'start': 34, 'type': 'whitespace'},
+ {'end': 54, 'start': 53, 'type': 'whitespace'},
+ {'end': 67, 'start': 66, 'type': 'whitespace'},
+ {'end': 70, 'start': 68, 'type': 'unknown'},
+ {'end': 72, 'start': 71, 'type': 'whitespace'},
+ {'end': 74, 'start': 73, 'type': 'unknown'},
+ {'end': 75, 'start': 75, 'type': 'whitespace'},
+ {'end': 76, 'start': 76, 'type': 'unknown'},
+ {'end': 77, 'start': 77, 'type': 'whitespace'},
+ {'end': 80, 'start': 78, 'type': 'unknown'},
+ {'end': 81, 'start': 81, 'type': 'whitespace'},
+ {'end': 82, 'start': 82, 'type': 'unknown'},
+ {'end': 83, 'start': 83, 'type': 'whitespace'},
+ {'end': 85, 'start': 84, 'type': 'unknown'},
+ {'end': 87, 'start': 86, 'type': 'whitespace'},
+ {'end': 96, 'start': 95, 'type': 'whitespace'},
+ {'end': 106, 'start': 102, 'type': 'whitespace'},
+ {'end': 111, 'start': 107, 'type': 'comment'},
+ {'end': 120, 'start': 120, 'type': 'whitespace'},
+ {'end': 135, 'start': 130, 'type': 'whitespace'},
+ {'end': 140, 'start': 136, 'type': 'comment'},
+ {'end': 148, 'start': 148, 'type': 'whitespace'},
+ {'end': 166, 'start': 166, 'type': 'whitespace'},
+ {'end': 174, 'start': 174, 'type': 'whitespace'},
+ {'end': 208, 'start': 207, 'type': 'whitespace'}]
+[{'end': 36, 'start': 1},
+ {'end': 54, 'start': 53},
+ {'end': 87, 'start': 66},
+ {'end': 96, 'start': 95},
+ {'end': 112, 'start': 102},
+ {'end': 120, 'start': 120},
+ {'end': 141, 'start': 130},
+ {'end': 148, 'start': 148},
+ {'end': 166, 'start': 166},
+ {'end': 174, 'start': 174},
+ {'end': 208, 'start': 207}]
+[(20, 20), (107, 111), (136, 140)]
 {
     "root": {
         "class": {
@@ -12,7 +60,7 @@
                         "col": null,
                         "return_type": "Variant",
                         "visibility": "Public",
-                        "source": "Public Function Add(objToAdd As Variant) As Variant\n    On Error GoTo ErrH\n    \n    If mTypeName = vbNullString _\n        Then mTypeName = TypeName(objToAdd)\n    \n    Call mCollection.Add(objToAdd)\n    \n    If IsObject(objToAdd) Then\n        Set Add = objToAdd\n    Else\n        Add = objToAdd\n    End If\n    \nErrH: Blame \"Add\"\nEnd Function",
+                        "source": "\n    On Error GoTo ErrH\n    \n    If mTypeName = vbNullString _\n        Then mTypeName = TypeName(objToAdd)\n    \n    Call mCollection.Add(objToAdd)\n    \n    If IsObject(objToAdd) Then\n        Set Add = objToAdd\n    Else\n        Add = objToAdd\n    End If\n    \nErrH: Blame \"Add\"\nEnd Function\n\n\nPublic Sub Clear()\n    On Error GoTo ErrH\n    With mCollection\n    \n        Dim i&: For i = 1 To .Count\n            Call .Remove(1)\n        Next i\n        \n    End With\nErrH: Blame \"Clear\"\nEnd Sub\n\n\nPublic Property Get Count() As Long\n    Count = mCollection.Count\nEnd Property\n\n\nPublic Property Get Item(zeroBasedIndx As Long) As Object\n    On Error GoTo ErrH\n    \n    ErrorIf Me.Count = 0, \"Collection has no items.\"\n    \n    ErrorIf zeroBasedIndx >= Me.Count _\n         , \"Attempted to retrieve item at index [\" & zeroBasedIndx & \"].\" & vbCrLf _\n         & \"But collection is only up to index [\" & Me.Count - 1 & \"].\"\n    \n    Set Item = mCollection.Item(zeroBasedIndx + 1)\n    \nErrH: Blame \"[Get]Item\"\nEnd Property\n\n\nPublic Sub Remove(zeroBasedIndx As Long)\n    On Error GoTo ErrH\n    \n    Call mCollection.Remove(zeroBasedIndx + 1)\n    \nErrH: Blame \"Remove\"\nEnd Sub\n\n\nPublic Function NewEnum() As IUnknown\nAttribute NewEnum.VB_UserMemId = -4\nAttribute NewEnum.VB_MemberFlags = \"40\"\n    Set NewEnum = mCollection.[_NewEnum]\nEnd Function\n\n\n\n\n\n' = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\n'\n'    Class Events\n'\n' = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\n\nPrivate Sub Class_Initialize()\n    On Error GoTo ErrH\n    \n    Set mCollection = New VBA.Collection\n    \nErrH: Blame \"Class_Initialize\"\nEnd Sub\n\nPrivate Sub Class_Terminate()\n    On Error GoTo ErrH\n    \n    Call Me.Clear\n    \n    Set mCollection = Nothing\n    \nErrH: Blame \"Class_Terminate\"\nEnd Sub\n\n\n\n\n\n\n' = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\n'\n'    Error Handlers\n'\n' = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\n\nPrivate Sub ErrorIf(errCondition As Boolean _\n                  , errorMsg As String _\n                  , Optional errorNumbr As CollectionWrapperErrors = -1 _\n                  )\n    If errCondition Then Err.Raise errorNumbr, TypeName(Me), errorMsg\nEnd Sub\n\nPrivate Sub SaveError()\n    With mError\n        If Err Then\n            .HasError = True\n            .Description = Err.Description\n            .Number = Err.Number\n            .Source = Err.Source\n            \n        Else\n            .HasError = False\n            .Description = vbNullString\n            .Number = 0\n            .Source = vbNullString\n        End If\n    End With\n    Err.Clear\nEnd Sub\n\nPrivate Sub Blame(ByVal currntProcedure As String _\n                , Optional ByVal errorDescrption As String _\n                , Optional ByVal errorNumbr As CollectionWrapperErrors = -1 _\n                )\n    Call SaveError\n    Call LoadError(currntProcedure, errorDescrption, errorNumbr)\nEnd Sub\n\nPrivate Sub LoadError(ByVal currntProcedure As String _\n                    , Optional ByVal errorDescrption As String _\n                    , Optional ByVal errorNumbr As CollectionWrapperErrors = -1 _\n                    )\n    With mError\n        If Not .HasError Then Exit Sub\n            \n        If LenB(errorDescrption) = 0 Then\n            errorDescrption = .Description\n        Else\n            errorDescrption = .Description & vbCrLf & errorDescrption\n        End If\n        \n        currntProcedure = mTypeName & \"s\" _\n                        & \".\" & currntProcedure & \"()\"\n\n        If errorNumbr = -1 Then errorNumbr = .Number\n        \n        Select Case errorNumbr\n            Case NotInitted\n                errorDescrption = TypeName(Me) & \" not initted.\" & vbCrLf _\n                               & \"Please call \" & TypeName(Me) _\n                               & \".Init() before \" & currntProcedure & \".\"\n            \n            Case Else\n                errorDescrption = currntProcedure & vbCrLf & errorDescrption\n        End Select\n\n        Err.Raise errorNumbr, .Source, errorDescrption\n            \n    End With\nEnd Sub\n",
                         "scope": "CollectionWrapper",
                         "file": "./vb6-toolbox/Data Structures/CollectionWrapper.cls",
                         "hash": "89c763e9e607740d",
@@ -37,7 +85,7 @@
                         "col": null,
                         "return_type": "IUnknown",
                         "visibility": "Public",
-                        "source": "Public Function NewEnum() As IUnknown\nAttribute NewEnum.VB_UserMemId = -4\nAttribute NewEnum.VB_MemberFlags = \"40\"\n    Set NewEnum = mCollection.[_NewEnum]\nEnd Function",
+                        "source": "Attribute NewEnum.VB_UserMemId = -4\nAttribute NewEnum.VB_MemberFlags = \"40\"\n    Set NewEnum = mCollection.[_NewEnum]\nEnd Function\n\n\n\n\n\n' = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\n'\n'    Class Events\n'\n' = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\n\nPrivate Sub Class_Initialize()\n    On Error GoTo ErrH\n    \n    Set mCollection = New VBA.Collection\n    \nErrH: Blame \"Class_Initialize\"\nEnd Sub\n\nPrivate Sub Class_Terminate()\n    On Error GoTo ErrH\n    \n    Call Me.Clear\n    \n    Set mCollection = Nothing\n    \nErrH: Blame \"Class_Terminate\"\nEnd Sub\n\n\n\n\n\n\n' = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\n'\n'    Error Handlers\n'\n' = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\n\nPrivate Sub ErrorIf(errCondition As Boolean _\n                  , errorMsg As String _\n                  , Optional errorNumbr As CollectionWrapperErrors = -1 _\n                  )\n    If errCondition Then Err.Raise errorNumbr, TypeName(Me), errorMsg\nEnd Sub\n\nPrivate Sub SaveError()\n    With mError\n        If Err Then\n            .HasError = True\n            .Description = Err.Description\n            .Number = Err.Number\n            .Source = Err.Source\n            \n        Else\n            .HasError = False\n            .Description = vbNullString\n            .Number = 0\n            .Source = vbNullString\n        End If\n    End With\n    Err.Clear\nEnd Sub\n\nPrivate Sub Blame(ByVal currntProcedure As String _\n                , Optional ByVal errorDescrption As String _\n                , Optional ByVal errorNumbr As CollectionWrapperErrors = -1 _\n                )\n    Call SaveError\n    Call LoadError(currntProcedure, errorDescrption, errorNumbr)\nEnd Sub\n\nPrivate Sub LoadError(ByVal currntProcedure As String _\n                    , Optional ByVal errorDescrption As String _\n                    , Optional ByVal errorNumbr As CollectionWrapperErrors = -1 _\n                    )\n    With mError\n        If Not .HasError Then Exit Sub\n            \n        If LenB(errorDescrption) = 0 Then\n            errorDescrption = .Description\n        Else\n            errorDescrption = .Description & vbCrLf & errorDescrption\n        End If\n        \n        currntProcedure = mTypeName & \"s\" _\n                        & \".\" & currntProcedure & \"()\"\n\n        If errorNumbr = -1 Then errorNumbr = .Number\n        \n        Select Case errorNumbr\n            Case NotInitted\n                errorDescrption = TypeName(Me) & \" not initted.\" & vbCrLf _\n                               & \"Please call \" & TypeName(Me) _\n                               & \".Init() before \" & currntProcedure & \".\"\n            \n            Case Else\n                errorDescrption = currntProcedure & vbCrLf & errorDescrption\n        End Select\n\n        Err.Raise errorNumbr, .Source, errorDescrption\n            \n    End With\nEnd Sub\n",
                         "scope": "CollectionWrapper",
                         "file": "./vb6-toolbox/Data Structures/CollectionWrapper.cls",
                         "hash": "89c763e9e607740d",
@@ -53,7 +101,7 @@
                         "end": 65,
                         "col": null,
                         "visibility": "Public",
-                        "source": "Public Sub Clear()\n    On Error GoTo ErrH\n    With mCollection\n    \n        Dim i&: For i = 1 To .Count\n            Call .Remove(1)\n        Next i\n        \n    End With\nErrH: Blame \"Clear\"\nEnd Sub",
+                        "source": "    On Error GoTo ErrH\n    With mCollection\n    \n        Dim i&: For i = 1 To .Count\n            Call .Remove(1)\n        Next i\n        \n    End With\nErrH: Blame \"Clear\"\nEnd Sub\n\n\nPublic Property Get Count() As Long\n    Count = mCollection.Count\nEnd Property\n\n\nPublic Property Get Item(zeroBasedIndx As Long) As Object\n    On Error GoTo ErrH\n    \n    ErrorIf Me.Count = 0, \"Collection has no items.\"\n    \n    ErrorIf zeroBasedIndx >= Me.Count _\n         , \"Attempted to retrieve item at index [\" & zeroBasedIndx & \"].\" & vbCrLf _\n         & \"But collection is only up to index [\" & Me.Count - 1 & \"].\"\n    \n    Set Item = mCollection.Item(zeroBasedIndx + 1)\n    \nErrH: Blame \"[Get]Item\"\nEnd Property\n\n\nPublic Sub Remove(zeroBasedIndx As Long)\n    On Error GoTo ErrH\n    \n    Call mCollection.Remove(zeroBasedIndx + 1)\n    \nErrH: Blame \"Remove\"\nEnd Sub\n\n\nPublic Function NewEnum() As IUnknown\nAttribute NewEnum.VB_UserMemId = -4\nAttribute NewEnum.VB_MemberFlags = \"40\"\n    Set NewEnum = mCollection.[_NewEnum]\nEnd Function\n\n\n\n\n\n' = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\n'\n'    Class Events\n'\n' = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\n\nPrivate Sub Class_Initialize()\n    On Error GoTo ErrH\n    \n    Set mCollection = New VBA.Collection\n    \nErrH: Blame \"Class_Initialize\"\nEnd Sub\n\nPrivate Sub Class_Terminate()\n    On Error GoTo ErrH\n    \n    Call Me.Clear\n    \n    Set mCollection = Nothing\n    \nErrH: Blame \"Class_Terminate\"\nEnd Sub\n\n\n\n\n\n\n' = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\n'\n'    Error Handlers\n'\n' = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\n\nPrivate Sub ErrorIf(errCondition As Boolean _\n                  , errorMsg As String _\n                  , Optional errorNumbr As CollectionWrapperErrors = -1 _\n                  )\n    If errCondition Then Err.Raise errorNumbr, TypeName(Me), errorMsg\nEnd Sub\n\nPrivate Sub SaveError()\n    With mError\n        If Err Then\n            .HasError = True\n            .Description = Err.Description\n            .Number = Err.Number\n            .Source = Err.Source\n            \n        Else\n            .HasError = False\n            .Description = vbNullString\n            .Number = 0\n            .Source = vbNullString\n        End If\n    End With\n    Err.Clear\nEnd Sub\n\nPrivate Sub Blame(ByVal currntProcedure As String _\n                , Optional ByVal errorDescrption As String _\n                , Optional ByVal errorNumbr As CollectionWrapperErrors = -1 _\n                )\n    Call SaveError\n    Call LoadError(currntProcedure, errorDescrption, errorNumbr)\nEnd Sub\n\nPrivate Sub LoadError(ByVal currntProcedure As String _\n                    , Optional ByVal errorDescrption As String _\n                    , Optional ByVal errorNumbr As CollectionWrapperErrors = -1 _\n                    )\n    With mError\n        If Not .HasError Then Exit Sub\n            \n        If LenB(errorDescrption) = 0 Then\n            errorDescrption = .Description\n        Else\n            errorDescrption = .Description & vbCrLf & errorDescrption\n        End If\n        \n        currntProcedure = mTypeName & \"s\" _\n                        & \".\" & currntProcedure & \"()\"\n\n        If errorNumbr = -1 Then errorNumbr = .Number\n        \n        Select Case errorNumbr\n            Case NotInitted\n                errorDescrption = TypeName(Me) & \" not initted.\" & vbCrLf _\n                               & \"Please call \" & TypeName(Me) _\n                               & \".Init() before \" & currntProcedure & \".\"\n            \n            Case Else\n                errorDescrption = currntProcedure & vbCrLf & errorDescrption\n        End Select\n\n        Err.Raise errorNumbr, .Source, errorDescrption\n            \n    End With\nEnd Sub\n",
                         "scope": "CollectionWrapper",
                         "file": "./vb6-toolbox/Data Structures/CollectionWrapper.cls",
                         "hash": "89c763e9e607740d"
@@ -64,7 +112,7 @@
                         "end": 94,
                         "col": null,
                         "visibility": "Public",
-                        "source": "Public Sub Remove(zeroBasedIndx As Long)\n    On Error GoTo ErrH\n    \n    Call mCollection.Remove(zeroBasedIndx + 1)\n    \nErrH: Blame \"Remove\"\nEnd Sub",
+                        "source": "    On Error GoTo ErrH\n    \n    Call mCollection.Remove(zeroBasedIndx + 1)\n    \nErrH: Blame \"Remove\"\nEnd Sub\n\n\nPublic Function NewEnum() As IUnknown\nAttribute NewEnum.VB_UserMemId = -4\nAttribute NewEnum.VB_MemberFlags = \"40\"\n    Set NewEnum = mCollection.[_NewEnum]\nEnd Function\n\n\n\n\n\n' = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\n'\n'    Class Events\n'\n' = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\n\nPrivate Sub Class_Initialize()\n    On Error GoTo ErrH\n    \n    Set mCollection = New VBA.Collection\n    \nErrH: Blame \"Class_Initialize\"\nEnd Sub\n\nPrivate Sub Class_Terminate()\n    On Error GoTo ErrH\n    \n    Call Me.Clear\n    \n    Set mCollection = Nothing\n    \nErrH: Blame \"Class_Terminate\"\nEnd Sub\n\n\n\n\n\n\n' = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\n'\n'    Error Handlers\n'\n' = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\n\nPrivate Sub ErrorIf(errCondition As Boolean _\n                  , errorMsg As String _\n                  , Optional errorNumbr As CollectionWrapperErrors = -1 _\n                  )\n    If errCondition Then Err.Raise errorNumbr, TypeName(Me), errorMsg\nEnd Sub\n\nPrivate Sub SaveError()\n    With mError\n        If Err Then\n            .HasError = True\n            .Description = Err.Description\n            .Number = Err.Number\n            .Source = Err.Source\n            \n        Else\n            .HasError = False\n            .Description = vbNullString\n            .Number = 0\n            .Source = vbNullString\n        End If\n    End With\n    Err.Clear\nEnd Sub\n\nPrivate Sub Blame(ByVal currntProcedure As String _\n                , Optional ByVal errorDescrption As String _\n                , Optional ByVal errorNumbr As CollectionWrapperErrors = -1 _\n                )\n    Call SaveError\n    Call LoadError(currntProcedure, errorDescrption, errorNumbr)\nEnd Sub\n\nPrivate Sub LoadError(ByVal currntProcedure As String _\n                    , Optional ByVal errorDescrption As String _\n                    , Optional ByVal errorNumbr As CollectionWrapperErrors = -1 _\n                    )\n    With mError\n        If Not .HasError Then Exit Sub\n            \n        If LenB(errorDescrption) = 0 Then\n            errorDescrption = .Description\n        Else\n            errorDescrption = .Description & vbCrLf & errorDescrption\n        End If\n        \n        currntProcedure = mTypeName & \"s\" _\n                        & \".\" & currntProcedure & \"()\"\n\n        If errorNumbr = -1 Then errorNumbr = .Number\n        \n        Select Case errorNumbr\n            Case NotInitted\n                errorDescrption = TypeName(Me) & \" not initted.\" & vbCrLf _\n                               & \"Please call \" & TypeName(Me) _\n                               & \".Init() before \" & currntProcedure & \".\"\n            \n            Case Else\n                errorDescrption = currntProcedure & vbCrLf & errorDescrption\n        End Select\n\n        Err.Raise errorNumbr, .Source, errorDescrption\n            \n    End With\nEnd Sub\n",
                         "scope": "CollectionWrapper",
                         "file": "./vb6-toolbox/Data Structures/CollectionWrapper.cls",
                         "hash": "89c763e9e607740d",
@@ -85,7 +133,7 @@
                         "end": 119,
                         "col": null,
                         "visibility": "Private",
-                        "source": "Private Sub Class_Initialize()\n    On Error GoTo ErrH\n    \n    Set mCollection = New VBA.Collection\n    \nErrH: Blame \"Class_Initialize\"\nEnd Sub",
+                        "source": "    On Error GoTo ErrH\n    \n    Set mCollection = New VBA.Collection\n    \nErrH: Blame \"Class_Initialize\"\nEnd Sub\n\nPrivate Sub Class_Terminate()\n    On Error GoTo ErrH\n    \n    Call Me.Clear\n    \n    Set mCollection = Nothing\n    \nErrH: Blame \"Class_Terminate\"\nEnd Sub\n\n\n\n\n\n\n' = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\n'\n'    Error Handlers\n'\n' = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\n\nPrivate Sub ErrorIf(errCondition As Boolean _\n                  , errorMsg As String _\n                  , Optional errorNumbr As CollectionWrapperErrors = -1 _\n                  )\n    If errCondition Then Err.Raise errorNumbr, TypeName(Me), errorMsg\nEnd Sub\n\nPrivate Sub SaveError()\n    With mError\n        If Err Then\n            .HasError = True\n            .Description = Err.Description\n            .Number = Err.Number\n            .Source = Err.Source\n            \n        Else\n            .HasError = False\n            .Description = vbNullString\n            .Number = 0\n            .Source = vbNullString\n        End If\n    End With\n    Err.Clear\nEnd Sub\n\nPrivate Sub Blame(ByVal currntProcedure As String _\n                , Optional ByVal errorDescrption As String _\n                , Optional ByVal errorNumbr As CollectionWrapperErrors = -1 _\n                )\n    Call SaveError\n    Call LoadError(currntProcedure, errorDescrption, errorNumbr)\nEnd Sub\n\nPrivate Sub LoadError(ByVal currntProcedure As String _\n                    , Optional ByVal errorDescrption As String _\n                    , Optional ByVal errorNumbr As CollectionWrapperErrors = -1 _\n                    )\n    With mError\n        If Not .HasError Then Exit Sub\n            \n        If LenB(errorDescrption) = 0 Then\n            errorDescrption = .Description\n        Else\n            errorDescrption = .Description & vbCrLf & errorDescrption\n        End If\n        \n        currntProcedure = mTypeName & \"s\" _\n                        & \".\" & currntProcedure & \"()\"\n\n        If errorNumbr = -1 Then errorNumbr = .Number\n        \n        Select Case errorNumbr\n            Case NotInitted\n                errorDescrption = TypeName(Me) & \" not initted.\" & vbCrLf _\n                               & \"Please call \" & TypeName(Me) _\n                               & \".Init() before \" & currntProcedure & \".\"\n            \n            Case Else\n                errorDescrption = currntProcedure & vbCrLf & errorDescrption\n        End Select\n\n        Err.Raise errorNumbr, .Source, errorDescrption\n            \n    End With\nEnd Sub\n",
                         "scope": "CollectionWrapper",
                         "file": "./vb6-toolbox/Data Structures/CollectionWrapper.cls",
                         "hash": "89c763e9e607740d"
@@ -96,7 +144,7 @@
                         "end": 129,
                         "col": null,
                         "visibility": "Private",
-                        "source": "Private Sub Class_Terminate()\n    On Error GoTo ErrH\n    \n    Call Me.Clear\n    \n    Set mCollection = Nothing\n    \nErrH: Blame \"Class_Terminate\"\nEnd Sub",
+                        "source": "    On Error GoTo ErrH\n    \n    Call Me.Clear\n    \n    Set mCollection = Nothing\n    \nErrH: Blame \"Class_Terminate\"\nEnd Sub\n\n\n\n\n\n\n' = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\n'\n'    Error Handlers\n'\n' = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\n\nPrivate Sub ErrorIf(errCondition As Boolean _\n                  , errorMsg As String _\n                  , Optional errorNumbr As CollectionWrapperErrors = -1 _\n                  )\n    If errCondition Then Err.Raise errorNumbr, TypeName(Me), errorMsg\nEnd Sub\n\nPrivate Sub SaveError()\n    With mError\n        If Err Then\n            .HasError = True\n            .Description = Err.Description\n            .Number = Err.Number\n            .Source = Err.Source\n            \n        Else\n            .HasError = False\n            .Description = vbNullString\n            .Number = 0\n            .Source = vbNullString\n        End If\n    End With\n    Err.Clear\nEnd Sub\n\nPrivate Sub Blame(ByVal currntProcedure As String _\n                , Optional ByVal errorDescrption As String _\n                , Optional ByVal errorNumbr As CollectionWrapperErrors = -1 _\n                )\n    Call SaveError\n    Call LoadError(currntProcedure, errorDescrption, errorNumbr)\nEnd Sub\n\nPrivate Sub LoadError(ByVal currntProcedure As String _\n                    , Optional ByVal errorDescrption As String _\n                    , Optional ByVal errorNumbr As CollectionWrapperErrors = -1 _\n                    )\n    With mError\n        If Not .HasError Then Exit Sub\n            \n        If LenB(errorDescrption) = 0 Then\n            errorDescrption = .Description\n        Else\n            errorDescrption = .Description & vbCrLf & errorDescrption\n        End If\n        \n        currntProcedure = mTypeName & \"s\" _\n                        & \".\" & currntProcedure & \"()\"\n\n        If errorNumbr = -1 Then errorNumbr = .Number\n        \n        Select Case errorNumbr\n            Case NotInitted\n                errorDescrption = TypeName(Me) & \" not initted.\" & vbCrLf _\n                               & \"Please call \" & TypeName(Me) _\n                               & \".Init() before \" & currntProcedure & \".\"\n            \n            Case Else\n                errorDescrption = currntProcedure & vbCrLf & errorDescrption\n        End Select\n\n        Err.Raise errorNumbr, .Source, errorDescrption\n            \n    End With\nEnd Sub\n",
                         "scope": "CollectionWrapper",
                         "file": "./vb6-toolbox/Data Structures/CollectionWrapper.cls",
                         "hash": "89c763e9e607740d"
@@ -107,7 +155,7 @@
                         "end": 147,
                         "col": null,
                         "visibility": "Private",
-                        "source": "Private Sub ErrorIf(errCondition As Boolean _\n                  , errorMsg As String _\n                  , Optional errorNumbr As CollectionWrapperErrors = -1 _\n                  )\n    If errCondition Then Err.Raise errorNumbr, TypeName(Me), errorMsg\nEnd Sub",
+                        "source": "                  , errorMsg As String _\n                  , Optional errorNumbr As CollectionWrapperErrors = -1 _\n                  )\n    If errCondition Then Err.Raise errorNumbr, TypeName(Me), errorMsg\nEnd Sub\n\nPrivate Sub SaveError()\n    With mError\n        If Err Then\n            .HasError = True\n            .Description = Err.Description\n            .Number = Err.Number\n            .Source = Err.Source\n            \n        Else\n            .HasError = False\n            .Description = vbNullString\n            .Number = 0\n            .Source = vbNullString\n        End If\n    End With\n    Err.Clear\nEnd Sub\n\nPrivate Sub Blame(ByVal currntProcedure As String _\n                , Optional ByVal errorDescrption As String _\n                , Optional ByVal errorNumbr As CollectionWrapperErrors = -1 _\n                )\n    Call SaveError\n    Call LoadError(currntProcedure, errorDescrption, errorNumbr)\nEnd Sub\n\nPrivate Sub LoadError(ByVal currntProcedure As String _\n                    , Optional ByVal errorDescrption As String _\n                    , Optional ByVal errorNumbr As CollectionWrapperErrors = -1 _\n                    )\n    With mError\n        If Not .HasError Then Exit Sub\n            \n        If LenB(errorDescrption) = 0 Then\n            errorDescrption = .Description\n        Else\n            errorDescrption = .Description & vbCrLf & errorDescrption\n        End If\n        \n        currntProcedure = mTypeName & \"s\" _\n                        & \".\" & currntProcedure & \"()\"\n\n        If errorNumbr = -1 Then errorNumbr = .Number\n        \n        Select Case errorNumbr\n            Case NotInitted\n                errorDescrption = TypeName(Me) & \" not initted.\" & vbCrLf _\n                               & \"Please call \" & TypeName(Me) _\n                               & \".Init() before \" & currntProcedure & \".\"\n            \n            Case Else\n                errorDescrption = currntProcedure & vbCrLf & errorDescrption\n        End Select\n\n        Err.Raise errorNumbr, .Source, errorDescrption\n            \n    End With\nEnd Sub\n",
                         "scope": "CollectionWrapper",
                         "file": "./vb6-toolbox/Data Structures/CollectionWrapper.cls",
                         "hash": "89c763e9e607740d",
@@ -145,7 +193,7 @@
                         "end": 165,
                         "col": null,
                         "visibility": "Private",
-                        "source": "Private Sub SaveError()\n    With mError\n        If Err Then\n            .HasError = True\n            .Description = Err.Description\n            .Number = Err.Number\n            .Source = Err.Source\n            \n        Else\n            .HasError = False\n            .Description = vbNullString\n            .Number = 0\n            .Source = vbNullString\n        End If\n    End With\n    Err.Clear\nEnd Sub",
+                        "source": "    With mError\n        If Err Then\n            .HasError = True\n            .Description = Err.Description\n            .Number = Err.Number\n            .Source = Err.Source\n            \n        Else\n            .HasError = False\n            .Description = vbNullString\n            .Number = 0\n            .Source = vbNullString\n        End If\n    End With\n    Err.Clear\nEnd Sub\n\nPrivate Sub Blame(ByVal currntProcedure As String _\n                , Optional ByVal errorDescrption As String _\n                , Optional ByVal errorNumbr As CollectionWrapperErrors = -1 _\n                )\n    Call SaveError\n    Call LoadError(currntProcedure, errorDescrption, errorNumbr)\nEnd Sub\n\nPrivate Sub LoadError(ByVal currntProcedure As String _\n                    , Optional ByVal errorDescrption As String _\n                    , Optional ByVal errorNumbr As CollectionWrapperErrors = -1 _\n                    )\n    With mError\n        If Not .HasError Then Exit Sub\n            \n        If LenB(errorDescrption) = 0 Then\n            errorDescrption = .Description\n        Else\n            errorDescrption = .Description & vbCrLf & errorDescrption\n        End If\n        \n        currntProcedure = mTypeName & \"s\" _\n                        & \".\" & currntProcedure & \"()\"\n\n        If errorNumbr = -1 Then errorNumbr = .Number\n        \n        Select Case errorNumbr\n            Case NotInitted\n                errorDescrption = TypeName(Me) & \" not initted.\" & vbCrLf _\n                               & \"Please call \" & TypeName(Me) _\n                               & \".Init() before \" & currntProcedure & \".\"\n            \n            Case Else\n                errorDescrption = currntProcedure & vbCrLf & errorDescrption\n        End Select\n\n        Err.Raise errorNumbr, .Source, errorDescrption\n            \n    End With\nEnd Sub\n",
                         "scope": "CollectionWrapper",
                         "file": "./vb6-toolbox/Data Structures/CollectionWrapper.cls",
                         "hash": "89c763e9e607740d"
@@ -156,7 +204,7 @@
                         "end": 173,
                         "col": null,
                         "visibility": "Private",
-                        "source": "Private Sub Blame(ByVal currntProcedure As String _\n                , Optional ByVal errorDescrption As String _\n                , Optional ByVal errorNumbr As CollectionWrapperErrors = -1 _\n                )\n    Call SaveError\n    Call LoadError(currntProcedure, errorDescrption, errorNumbr)\nEnd Sub",
+                        "source": "                , Optional ByVal errorDescrption As String _\n                , Optional ByVal errorNumbr As CollectionWrapperErrors = -1 _\n                )\n    Call SaveError\n    Call LoadError(currntProcedure, errorDescrption, errorNumbr)\nEnd Sub\n\nPrivate Sub LoadError(ByVal currntProcedure As String _\n                    , Optional ByVal errorDescrption As String _\n                    , Optional ByVal errorNumbr As CollectionWrapperErrors = -1 _\n                    )\n    With mError\n        If Not .HasError Then Exit Sub\n            \n        If LenB(errorDescrption) = 0 Then\n            errorDescrption = .Description\n        Else\n            errorDescrption = .Description & vbCrLf & errorDescrption\n        End If\n        \n        currntProcedure = mTypeName & \"s\" _\n                        & \".\" & currntProcedure & \"()\"\n\n        If errorNumbr = -1 Then errorNumbr = .Number\n        \n        Select Case errorNumbr\n            Case NotInitted\n                errorDescrption = TypeName(Me) & \" not initted.\" & vbCrLf _\n                               & \"Please call \" & TypeName(Me) _\n                               & \".Init() before \" & currntProcedure & \".\"\n            \n            Case Else\n                errorDescrption = currntProcedure & vbCrLf & errorDescrption\n        End Select\n\n        Err.Raise errorNumbr, .Source, errorDescrption\n            \n    End With\nEnd Sub\n",
                         "scope": "CollectionWrapper",
                         "file": "./vb6-toolbox/Data Structures/CollectionWrapper.cls",
                         "hash": "89c763e9e607740d",
@@ -194,7 +242,7 @@
                         "end": 206,
                         "col": null,
                         "visibility": "Private",
-                        "source": "Private Sub LoadError(ByVal currntProcedure As String _\n                    , Optional ByVal errorDescrption As String _\n                    , Optional ByVal errorNumbr As CollectionWrapperErrors = -1 _\n                    )\n    With mError\n        If Not .HasError Then Exit Sub\n            \n        If LenB(errorDescrption) = 0 Then\n            errorDescrption = .Description\n        Else\n            errorDescrption = .Description & vbCrLf & errorDescrption\n        End If\n        \n        currntProcedure = mTypeName & \"s\" _\n                        & \".\" & currntProcedure & \"()\"\n\n        If errorNumbr = -1 Then errorNumbr = .Number\n        \n        Select Case errorNumbr\n            Case NotInitted\n                errorDescrption = TypeName(Me) & \" not initted.\" & vbCrLf _\n                               & \"Please call \" & TypeName(Me) _\n                               & \".Init() before \" & currntProcedure & \".\"\n            \n            Case Else\n                errorDescrption = currntProcedure & vbCrLf & errorDescrption\n        End Select\n\n        Err.Raise errorNumbr, .Source, errorDescrption\n            \n    End With\nEnd Sub",
+                        "source": "                    , Optional ByVal errorDescrption As String _\n                    , Optional ByVal errorNumbr As CollectionWrapperErrors = -1 _\n                    )\n    With mError\n        If Not .HasError Then Exit Sub\n            \n        If LenB(errorDescrption) = 0 Then\n            errorDescrption = .Description\n        Else\n            errorDescrption = .Description & vbCrLf & errorDescrption\n        End If\n        \n        currntProcedure = mTypeName & \"s\" _\n                        & \".\" & currntProcedure & \"()\"\n\n        If errorNumbr = -1 Then errorNumbr = .Number\n        \n        Select Case errorNumbr\n            Case NotInitted\n                errorDescrption = TypeName(Me) & \" not initted.\" & vbCrLf _\n                               & \"Please call \" & TypeName(Me) _\n                               & \".Init() before \" & currntProcedure & \".\"\n            \n            Case Else\n                errorDescrption = currntProcedure & vbCrLf & errorDescrption\n        End Select\n\n        Err.Raise errorNumbr, .Source, errorDescrption\n            \n    End With\nEnd Sub\n",
                         "scope": "CollectionWrapper",
                         "file": "./vb6-toolbox/Data Structures/CollectionWrapper.cls",
                         "hash": "89c763e9e607740d",
@@ -252,3 +300,55 @@
         }
     }
 }
+[
+    {
+        "start": 37,
+        "end": 52,
+        "scope": "CollectionWrapper.Add"
+    },
+    {
+        "start": 55,
+        "end": 65,
+        "scope": "CollectionWrapper.Clear"
+    },
+    {
+        "start": 88,
+        "end": 94,
+        "scope": "CollectionWrapper.Remove"
+    },
+    {
+        "start": 97,
+        "end": 101,
+        "scope": "CollectionWrapper.NewEnum"
+    },
+    {
+        "start": 113,
+        "end": 119,
+        "scope": "CollectionWrapper.Class_Initialize"
+    },
+    {
+        "start": 121,
+        "end": 129,
+        "scope": "CollectionWrapper.Class_Terminate"
+    },
+    {
+        "start": 142,
+        "end": 147,
+        "scope": "CollectionWrapper.ErrorIf"
+    },
+    {
+        "start": 149,
+        "end": 165,
+        "scope": "CollectionWrapper.SaveError"
+    },
+    {
+        "start": 167,
+        "end": 173,
+        "scope": "CollectionWrapper.Blame"
+    },
+    {
+        "start": 175,
+        "end": 206,
+        "scope": "CollectionWrapper.LoadError"
+    }
+]
